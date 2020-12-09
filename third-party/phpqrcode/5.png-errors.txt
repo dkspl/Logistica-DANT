@@ -1,0 +1,24 @@
+2020-11-24 09:01:48: <br />
+<b>Notice</b>:  Trying to access array offset on value of type int in <b>D:\Program Files\xampp\htdocs\third-party\phpqrcode\qrsplit.php</b> on line <b>71</b><br />
+<br />
+<b>Notice</b>:  Trying to access array offset on value of type int in <b>D:\Program Files\xampp\htdocs\third-party\phpqrcode\qrsplit.php</b> on line <b>53</b><br />
+<br />
+<b>Notice</b>:  Trying to access array offset on value of type int in <b>D:\Program Files\xampp\htdocs\third-party\phpqrcode\qrsplit.php</b> on line <b>62</b><br />
+2020-11-27 19:10:44: <br />
+<b>Notice</b>:  Trying to access array offset on value of type int in <b>D:\Program Files\xampp\htdocs\third-party\phpqrcode\qrsplit.php</b> on line <b>71</b><br />
+<br />
+<b>Notice</b>:  Trying to access array offset on value of type int in <b>D:\Program Files\xampp\htdocs\third-party\phpqrcode\qrsplit.php</b> on line <b>53</b><br />
+<br />
+<b>Notice</b>:  Trying to access array offset on value of type int in <b>D:\Program Files\xampp\htdocs\third-party\phpqrcode\qrsplit.php</b> on line <b>62</b><br />
+2020-11-30 14:44:08: <br />
+<b>Notice</b>:  Trying to access array offset on value of type int in <b>D:\Program Files\xampp\htdocs\third-party\phpqrcode\qrsplit.php</b> on line <b>71</b><br />
+<br />
+<b>Notice</b>:  Trying to access array offset on value of type int in <b>D:\Program Files\xampp\htdocs\third-party\phpqrcode\qrsplit.php</b> on line <b>53</b><br />
+<br />
+<b>Notice</b>:  Trying to access array offset on value of type int in <b>D:\Program Files\xampp\htdocs\third-party\phpqrcode\qrsplit.php</b> on line <b>62</b><br />
+2020-12-01 20:36:02: <br />
+<b>Notice</b>:  Trying to access array offset on value of type int in <b>D:\Program Files\xampp\htdocs\third-party\phpqrcode\qrsplit.php</b> on line <b>71</b><br />
+<br />
+<b>Notice</b>:  Trying to access array offset on value of type int in <b>D:\Program Files\xampp\htdocs\third-party\phpqrcode\qrsplit.php</b> on line <b>53</b><br />
+<br />
+<b>Notice</b>:  Trying to access array offset on value of type int in <b>D:\Program Files\xampp\htdocs\third-party\phpqrcode\qrsplit.php</b> on line <b>62</b><br />

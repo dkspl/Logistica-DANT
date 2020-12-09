@@ -1,0 +1,165 @@
+<div class="w3-container w3-card w3-white w3-round">
+    <h3>DANT - Dirección Autónoma Nacional de Transporte</h3>
+    <img src="/public/img/logo.png" class="w3-left w3-margin-right" style="width:150px;float:right">
+    <span class="w3-right w3-opacity">30-12345678-9</span><br>
+    <span class="w3-right w3-opacity">Calle Falsa 123</span><br>
+    <span class="w3-right w3-opacity">nohayproblema@dant.com.ar</span><br>
+    <span class="w3-right w3-opacity">(011) 0303456</span>
+</div>
+
+<div class="w3-container w3-margin">
+    <div class="w3-container w3-white">
+        <h3>Cliente</h3>
+        {{#cliente}}
+            <table class="w3-table w3-striped">
+                <tr>
+                    <td>DENOMINACIÓN: {{denominacion}}</td>
+                    <td>CUIT: {{cuit}}</td>
+                </tr>
+                <!--<tr>
+                <td>Combustible</td>
+                <td>{{combustible}}</td>
+            </tr>-->
+                <tr>
+                    <td>DIRECCIÓN: </td>
+                    <td>{{direccion}}</td>
+                </tr>
+                <tr>
+                    <td>E-MAIL: {{email}}</td>
+                    <td>TELÉFONO: {{telefono}}</td>
+                </tr>
+            </table>
+        {{/cliente}}
+    </div>
+</div>
+<div class="w3-container w3-margin">
+    <div class="w3-container w3-white">
+        {{#travel}}
+        <h3>Viaje</h3>
+            <table class="w3-table w3-striped">
+                <tr>
+                    <td>ORIGEN: {{origen}}</td>
+                </tr>
+                <tr>
+                    <td>DESTINO: {{destino}}</td>
+                </tr>
+                <!--<tr>
+                <td>Combustible</td>
+                <td>{{combustible}}</td>
+            </tr>-->
+                <tr>
+                    <td>ETA: {{eta}}</td>
+                    <td>ETD: {{etd}}</td>
+                </tr>
+            </table>
+        {{/travel}}
+    </div>
+</div>
+<div class="w3-container w3-margin">
+    <div class="w3-container w3-white">
+        <h3>Costo estimado</h3>
+        {{#costo}}
+        <table class="w3-table w3-striped">
+            <tr>
+                <th>Razón</th>
+                <th>Costo estimado</th>
+            </tr>
+            <tr>
+                <td>Kilómetros recorridos</td>
+                <td>{{km}}</td>
+            </tr>
+            <tr>
+                <td>Combustible</td>
+                <td>{{consumo}}</td>
+            </tr>
+            <tr>
+                <td>Hazard</td>
+                <td>{{hazard}}</td>
+            </tr>
+            <tr>
+                <td>Reefer</td>
+                <td>{{reefer}}</td>
+            </tr>
+            <tr class="w3-green">
+                <td><b>Total</b></td>
+                <td><b>{{#importe}}{{Total}}{{/importe}}</b></td>
+            </tr>
+        </table>
+        {{/costo}}
+    </div>
+</div>
+<div class="w3-container w3-margin">
+    <div class="w3-container w3-white">
+        {{#chofer}}
+            <h3>Chofer</h3>
+            <table class="w3-table w3-striped">
+                <tr>
+                    <td>DNI: {{dni}}</td>
+                    <td>APELLIDO: {{apellido}}</td>
+                    <td>NOMBRE: {{nombre}}</td>
+                </tr>
+                <!--<tr>
+                <td>Combustible</td>
+                <td>{{combustible}}</td>
+            </tr>-->
+
+            </table>
+        {{/chofer}}
+    </div>
+    <br>
+    <div class="w3-container w3-white">
+            {{#tractor}}
+            <h3>Tractor</h3>
+            <table class="w3-table w3-striped">
+                <tr>
+                    <td>PATENTE: {{patente}}</td>
+                    <td>N° DE CHASIS: {{nroChasis}}</td>
+                </tr>
+                <!--<tr>
+                <td>Combustible</td>
+                <td>{{combustible}}</td>
+            </tr>-->
+                <tr>
+                    <td>MARCA: {{marca}}</td>
+                    <td>MODELO: {{modelo}}</td>
+                </tr>
+                <tr>
+                    <td>KILÓMETROS: {{kmTotales}}</td>
+                    <td>AÑO DE FABRICACIÓN: {{anoFabricacion}}</td>
+                </tr>
+            </table>
+            {{/tractor}}
+    </div>
+    <br>
+    <div class="w3-container w3-white">
+        {{#arrastrado}}
+            <h3>Arrastrado</h3>
+            <table class="w3-table w3-striped">
+                <tr>
+                    <td>PATENTE: {{patente}}</td>
+                    <td>N° DE CHASIS: {{nroChasis}}</td>
+                </tr>
+                <!--<tr>
+                <td>Combustible</td>
+                <td>{{combustible}}</td>
+            </tr>-->
+                <tr>
+                    <td>MARCA: {{marca}}</td>
+                    <td>MODELO: {{modelo}}</td>
+                </tr>
+                <tr>
+                    <td>KILÓMETROS: {{kmTotales}}</td>
+                    <td>AÑO DE FABRICACIÓN: {{anoFabricacion}}</td>
+                </tr>
+            </table>
+        {{/arrastrado}}
+    </div>
+</div>
+<div class="w3-container w3-margin">
+    <div class="w3-container w3-white">
+        <h3>Código QR</h3>
+    {{#travel}}
+        <img src="/tmp/{{codViaje}}.png">
+    {{/travel}}
+    </div>
+</div>

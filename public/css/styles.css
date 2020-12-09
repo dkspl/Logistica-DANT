@@ -1,0 +1,61 @@
+html, body {
+    height: 100%;
+    font-family:  Arial, "Segoe UI", sans-serif;
+}
+input[type="file"] {
+    display: none;
+}
+#imageLabel{
+    cursor: pointer;
+}
+a {
+    text-decoration: none;
+}
+.clearfix:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+#logo {
+    text-align: right;
+    display:compact;
+    margin-bottom: 10px;
+}
+
+#logo img {
+    width: 90px;
+}
+#cliente {
+    float: left;
+}
+
+#cliente span {
+    color: #5D6975;
+    text-align: right;
+    width: 52px;
+    margin-right: 10px;
+    display: inline-block;
+    font-size: 0.8em;
+}
+
+#cuni {
+    float: right;
+    text-align: right;
+    display:compact;
+}
+
+#cliente div,
+#cuni div {
+    white-space: nowrap;
+}
+.map-wrapper {
+    position: relative;
+}
+
+/*#map {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}*/

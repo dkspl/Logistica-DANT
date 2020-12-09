@@ -1,0 +1,109 @@
+<div class="w3-container w3-card w3-white w3-round">
+    <h3>DANT - Dirección Autónoma Nacional de Transporte</h3>
+    <img src="/public/img/logo.png" class="w3-left w3-margin-right" style="width:150px;float:right">
+    <span class="w3-right w3-opacity">30-12345678-9</span><br>
+    <span class="w3-right w3-opacity">Calle Falsa 123</span><br>
+    <span class="w3-right w3-opacity">nohayproblema@dant.com.ar</span><br>
+    <span class="w3-right w3-opacity">(011) 0303456</span>
+</div>
+<div class="w3-container w3-margin">
+    <div class="w3-container w3-white">
+        <h3>Cliente</h3>
+        {{#cliente}}
+            <table class="w3-table w3-striped">
+                <tr>
+                    <td>DENOMINACIÓN: {{denominacion}}</td>
+                    <td>CUIT: {{cuit}}</td>
+                </tr>
+                <!--<tr>
+                <td>Combustible</td>
+                <td>{{combustible}}</td>
+            </tr>-->
+                <tr>
+                    <td>DIRECCIÓN: </td>
+                    <td>{{direccion}}</td>
+                </tr>
+                <tr>
+                    <td>E-MAIL: {{email}}</td>
+                    <td>TELÉFONO: {{telefono}}</td>
+                </tr>
+            </table>
+        {{/cliente}}
+    </div>
+</div>
+<div class="w3-container w3-margin">
+    <div class="w3-container w3-white">
+        {{#travel}}
+            <h3>Viaje</h3>
+            <table class="w3-table w3-striped">
+                <tr>
+                    <td>ORIGEN: {{origen}}</td>
+
+                </tr>
+                <tr>
+                    <td>DESTINO: {{destino}}</td>
+                </tr>
+                <tr>
+                    <td>COMBUSTIBLE: {{consumo}}</td>
+                </tr>
+                <tr>
+                    <td>FECHA DE CARGA: {{fcarga}}</td>
+                    <td>FECHA DE LLEGADA: {{fllegada}}</td>
+                </tr>
+            </table>
+        {{/travel}}
+    </div>
+</div>
+<div class="w3-container w3-margin">
+    <div class="w3-container w3-white">
+        <h3>Costo final</h3>
+        {{#costo}}
+            <table class="w3-table w3-striped">
+                <tr>
+                    <th>Razón</th>
+                    <th>Costo</th>
+                </tr>
+                <tr>
+                    <td>Kilómetros recorridos</td>
+                    <td>{{km}}</td>
+                </tr>
+                <tr>
+                    <td>Desvíos</td>
+                    <td>{{desvio}}</td>
+                </tr>
+                <tr>
+                    <td>Consumo de combustible</td>
+                    <td>{{consumo}}</td>
+                </tr>
+                <tr>
+                    <td>Viáticos</td>
+                    <td>{{viaticos}}</td>
+                </tr>
+                <tr>
+                    <td>Peajes</td>
+                    <td>{{peajes}}</td>
+                </tr>
+                <tr>
+                    <td>Pesajes</td>
+                    <td>{{pesajes}}</td>
+                </tr>
+                <tr>
+                    <td>Extras</td>
+                    <td>{{extras}}</td>
+                </tr>
+                <tr>
+                    <td>Hazard</td>
+                    <td>{{hazard}}</td>
+                </tr>
+                <tr>
+                    <td>Reefer</td>
+                    <td>{{reefer}}</td>
+                </tr>
+                <tr class="w3-green">
+                    <td><b>Total</b></td>
+                    <td><b>{{#importe}}{{Total}}{{/importe}}</b></td>
+                </tr>
+            </table>
+        {{/costo}}
+    </div>
+</div>
