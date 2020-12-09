@@ -97,6 +97,20 @@ FOREIGN KEY(cliente) REFERENCES Cliente(cuit) ON DELETE SET NULL,
 FOREIGN KEY(arrastrado) REFERENCES Vehiculo(patente) ON DELETE SET NULL
 );
 
+CREATE TABLE IF NOT EXISTS ImoClass(
+idClase int,
+especialidad varchar(100),
+PRIMARY KEY(idClase)
+);
+
+CREATE TABLE IF NOT EXISTS ImoSubclass(
+idSubclase int,
+nroSubclase int,
+especialidadSub varchar(100),
+idClase int,
+PRIMARY KEY(idSubclase),
+FOREIGN KEY(idClase) REFERENCES imoClass(idClase)
+);
 CREATE TABLE IF NOT EXISTS Carga(
 codCarga int not null AUTO_INCREMENT,
 viaje int not null,
@@ -128,21 +142,6 @@ desvio double DEFAULT 0,
 viaje int,
 PRIMARY KEY(codCosteo),
 FOREIGN KEY(viaje) REFERENCES Viaje(codViaje)
-);
-
-CREATE TABLE IF NOT EXISTS ImoClass(
-idClase int,
-especialidad varchar(100),
-PRIMARY KEY(idClase)
-);
-
-CREATE TABLE IF NOT EXISTS ImoSubclass(
-idSubclase int,
-nroSubclase int,
-especialidadSub varchar(100),
-idClase int,
-PRIMARY KEY(idSubclase),
-FOREIGN KEY(idClase) REFERENCES imoClass(idClase)
 );
 
 CREATE TABLE IF NOT EXISTS Ubicacion(
@@ -312,11 +311,11 @@ CREATE TRIGGER t_invalidarEstadosPorBajaEmpleado
 AFTER UPDATE ON Empleado FOR EACH ROW
 BEGIN
 IF((NEW.fechaBaja IS NOT NULL) AND (OLD.fechaBaja IS NULL)) THEN
-    IF EXISTS (SELECT * FROM Chofer WHERE dniChof=NEW.dni) THEN
+    IF EXISTS (SELECT * FROM Chofer WHERE Chofer.dniChof=NEW.dni) THEN
     UPDATE Chofer SET Chofer.disponibilidad = 0
     WHERE Chofer.dniChof = NEW.dni;
     END IF;
-    IF EXISTS (SELECT * FROM Mecanico WHERE dni=NEW.dni) THEN
+    IF EXISTS (SELECT * FROM Mecanico WHERE dniMec=NEW.dni) THEN
     UPDATE Mecanico SET Mecanico.disponibilidad = 0
     WHERE Mecanico.dniMec = NEW.dni;
     END IF;

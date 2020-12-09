@@ -110,7 +110,7 @@ class ViajeModel
     public function getTravelByQr($variable){
         if(isset($variable) && $variable != false){
             $result=$this->getTravel($variable);
-            if(!is_null($result) && $this->validateChofer($result[0]["chofer"])){
+            if(!is_null($result) && $this->validateChofer($result[0]["chofer"]) && $this->isModifiable($result[0])){
                 return $result;
             }
         }
@@ -136,6 +136,43 @@ class ViajeModel
             ".$data["extras"].")";
             $this->database->execute($sql);
         }
+    }
+
+    public function updatePuntoCombustible($data){
+        $datosViaje=$this->getTravel($data["codViaje"])[0];
+        if(strcmp($datosViaje["estado"],'cancelado')!=0 && is_null($datosViaje["fllegada"])){
+            $sqlCombustible="INSERT INTO Combustible(numViaje,latComb,longComb,cantidad,importe) 
+            VALUES (".$data["codViaje"].",
+            ".$data["latitud"].",
+            ".$data["longitud"].",
+            ".$data["cantidad"].",
+            ".$data["importe"].")";
+            $this->database->execute($sqlCombustible);
+            $data["kmRecorridos"]=$this->setKm($data["codViaje"], $data["latitud"], $data["longitud"]);
+            $sqlUbicacion="INSERT INTO Ubicacion(latitud,longitud,viaje,kmRecorridos,consumo) 
+            VALUES (".$data["latitud"].",
+            ".$data["longitud"].",
+            ".$data["codViaje"].",
+            ".$data["kmRecorridos"].",
+            ".$data["consumo"].")";
+            $this->database->execute($sqlUbicacion);
+        }
+    }
+
+    public function endTravel($data){
+        $this->updateTravelPoint($data);
+        $llegada=date('Y-m-d');
+        $kmFinal=$this->getSumaFrom($data["codViaje"], "kmRecorridos")[0]["sumakmRecorridos"];
+        $consumoFinal=$this->getSumaFrom($data["codViaje"],"consumo")[0]["sumaconsumo"];
+        $sql = "UPDATE Viaje SET 
+        fllegada = '".$llegada."',
+        estado = 'finalizado',
+        kmTotales =  ".$kmFinal.", 
+        consumoTotal = ".$consumoFinal." 
+        WHERE codViaje = ".$data["codViaje"]." AND fllegada IS NULL";
+        $this->database->execute($sql);
+        $this->setRealCost($data["codViaje"]);
+        return $data["codViaje"];
     }
 
     public function getTravelsFrom($chofer){
@@ -208,8 +245,16 @@ class ViajeModel
     }
 
     public function calculateReefer($temperatura){
-        return $temperatura * 3;
+        return abs($temperatura) * 3;
     }
+    public function calculateCostoConsumo($consumo){
+        return $consumo * 30;
+    }
+
+    public function calculateConsumoPorKm($vehiculo, $km){
+        return $km * $vehiculo["consumo"] / 100;
+    }
+
     public function calculateCostoDesvio($kmTotales,$kmEstimado){
         $valor = $kmTotales-$kmEstimado;
         return $valor > 0 ? $valor * 10 : 0;
@@ -364,46 +409,13 @@ class ViajeModel
         $diff = $inicio->diff($fin);
         return $diff->days;
     }
-
-    public function endTravel($data){
-        $this->updateTravelPoint($data);
-        $llegada=date('Y-m-d');
-        $kmFinal=$this->getSumaFrom($data["codViaje"], "kmRecorridos")[0]["sumakmRecorridos"];
-        $consumoFinal=$this->getSumaFrom($data["codViaje"],"consumo")[0]["sumaconsumo"];
-        $sql = "UPDATE Viaje SET 
-        fllegada = '".$llegada."',
-        estado = 'finalizado',
-        kmTotales =  ".$kmFinal.", 
-        consumoTotal = ".$consumoFinal." 
-        WHERE codViaje = ".$data["codViaje"]." AND fllegada IS NULL";
-        $this->database->execute($sql);
-        $this->setRealCost($data["codViaje"]);
-        return $data["codViaje"];
-    }
-    public function calculateCostoConsumo($consumo){
-        return $consumo * 30;
-    }
-    public function calculateConsumoPorKm($vehiculo, $km){
-        return $km * $vehiculo["consumo"] / 100;
-    }
-    public function updatePuntoCombustible($data){
-        $datosViaje=$this->getTravel($data["codViaje"])[0];
-        if(strcmp($datosViaje["estado"],'cancelado')!=0 && is_null($datosViaje["fllegada"])){
-            $sqlCombustible="INSERT INTO Combustible(numViaje,latComb,longComb,cantidad,importe) 
-            VALUES (".$data["codViaje"].",
-            ".$data["latitud"].",
-            ".$data["longitud"].",
-            ".$data["cantidad"].",
-            ".$data["importe"].")";
-            $this->database->execute($sqlCombustible);
-            $data["kmRecorridos"]=$this->setKm($data["codViaje"], $data["latitud"], $data["longitud"]);
-            $sqlUbicacion="INSERT INTO Ubicacion(latitud,longitud,viaje,kmRecorridos,consumo) 
-            VALUES (".$data["latitud"].",
-            ".$data["longitud"].",
-            ".$data["codViaje"].",
-            ".$data["kmRecorridos"].",
-            ".$data["consumo"].")";
-            $this->database->execute($sqlUbicacion);
+    public function isModifiableList($data){
+        for ($i=0; $i<sizeof($data);$i++){
+            $data[$i]["isModifiable"]=$this->isModifiable($data[$i]);
         }
+        return $data;
+    }
+    public function isModifiable($viaje){
+        return (strcmp($viaje["estado"],'cancelado')!=0) && (strcmp($viaje["estado"],'finalizado')!=0);
     }
 }

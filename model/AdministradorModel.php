@@ -14,7 +14,9 @@ class AdministradorModel
     }
     public function deleteUser($dni){
         $fecha = date("Y-m-d");
-        $sql="UPDATE Empleado SET fechaBaja = '".$fecha."', estado=0 WHERE dni=".$dni;
+        $sql="UPDATE Empleado SET fechaBaja = '".$fecha."', estado=0 
+        WHERE Empleado.dni = ".$dni;
+        //die(var_dump($sql));
         $this->database->execute($sql);
     }
     public function getNotifications(){

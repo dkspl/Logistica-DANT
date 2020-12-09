@@ -70,8 +70,8 @@
         {{#viajes}}
         <tr>
             <td>{{codViaje}}</td>
-            <td style="max-width:10%">{{origen}}</td>
-            <td style="max-width:10%">{{destino}}</td>
+            <td style="max-width:200px">{{origen}}</td>
+            <td style="max-width:200px">{{destino}}</td>
             <td>{{estado}}</td>
             {{#fllegada}}
             <td>{{fllegada}}</td>
@@ -85,14 +85,14 @@
                 {{#fllegada}}
                 <a class="w3-bar-item w3-button w3-yellow" target="_blank" href="/Supervisor/factura/id={{codViaje}}">Ver factura</a>
                 {{/fllegada}}
-                {{^fllegada}}
+                {{#isModifiable}}
                 <button onclick="showModalById('stat');addIdTo('{{codViaje}}', 'codViaje')"
                         class='w3-bar-item w3-button w3-blue'>Actualizar</button>
                 <button onclick="showModalById('confirm');addIdTo('{{codViaje}}', 'codigo')
                     ;addIdTo('{{tractor}}', 'tractor');addIdTo('{{chofer}}', 'chofer');
                     addIdTo('{{arrastrado}}', 'arrastrado');"
                         class='w3-bar-item w3-button w3-red'>Cancelar</button>
-                {{/fllegada}}
+                {{/isModifiable}}
                 {{/permissions}}
             </td>
         </tr>

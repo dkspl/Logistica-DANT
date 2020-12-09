@@ -65,6 +65,9 @@
             </label>
             {{/ubicacion}}
         </div>
+        <div class="w3-container w3-margin w3-center">
+            <a href="/" class="w3-button w3-border w3-border-blue w3-text-blue w3-white">Volver</a>
+        </div>
     </div>
 </div>
 {{/vehiculo}}

@@ -8,7 +8,6 @@ include_once ("model/AdministradorModel.php");
 include_once ("model/ViajeModel.php");
 include_once ("model/VehiculoModel.php");
 
-include_once ("controller/IndexController.php");
 include_once ("controller/UsuarioController.php");
 include_once ("controller/AdministradorController.php");
 include_once ("controller/SupervisorController.php");

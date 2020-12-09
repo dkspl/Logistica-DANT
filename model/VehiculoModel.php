@@ -81,7 +81,6 @@ class VehiculoModel
             costo=".$data["costo"].", observaciones='".$data["observaciones"]."', 
             fechaFin='".$fechaHoy."' WHERE codigo=".$data["codigo"];
         $this->database->execute($sql);
-        //$this->setDisponibilidad($data["vehiculo"]);
         $this->setFechaService($data["vehiculo"], $fechaNuevoService);
     }
     public function getVehiculosDisponibles(){

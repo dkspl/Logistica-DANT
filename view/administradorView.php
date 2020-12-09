@@ -52,7 +52,7 @@
                 <h4 class="w3-center">Vehículos</h4>
             </div>
         </a>
-        <a href="/Administrador/Reportes" class="w3-half">
+        <a class="w3-half" disabled="disabled">
             <div class="w3-container w3-blue w3-padding-16">
                 <div class="w3-center"><i class="w3-xxxlarge material-icons">leaderboard</i></div>
                 <!-- Cantidad dinámica

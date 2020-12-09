@@ -20,7 +20,6 @@ class ChoferController
     }
     public function myTravels(){
         $data["viajes"]=$this->viajeModel->getTravelsFrom($_SESSION["user"]);
-        //$data["session"]=$this->usuarioModel->isSessionStarted();
         echo $this->render->render("view/travelsView.php",$data);
     }
     public function searchMyTravel(){

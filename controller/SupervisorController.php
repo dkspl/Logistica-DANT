@@ -16,19 +16,16 @@ class SupervisorController
         $this->render = $render;
     }
     public function execute(){
-        //$data["session"]=$this->usuarioModel->isSessionStarted();
-        echo $this->render->render("view/supervisorView.php"/*,$data*/);
+        echo $this->render->render("view/supervisorView.php");
     }
     public function startTravelForm(){
-        //$data["session"]=$this->usuarioModel->isSessionStarted();
         $data["arrastrados"]=$this->vehiculoModel->getArrastradosDisponibles();
         $data["choferes"]=$this->usuarioModel->getChoferesDisponibles();
         $data["tractores"]=$this->vehiculoModel->getTractoresDisponibles();
         echo $this->render->render("view/travelFormView.php",$data);
     }
     public function travels(){
-        //$data["session"]=$this->usuarioModel->isSessionStarted();
-        $data["viajes"]=$this->viajeModel->getTravels();
+        $data["viajes"]=$this->viajeModel->isModifiableList($this->viajeModel->getTravels());
         $data["permissions"]=$this->usuarioModel->validatePermissions($_SESSION["user"]);
         echo $this->render->render("view/travelsView.php",$data);
     }
@@ -99,7 +96,6 @@ class SupervisorController
         $this->vehiculoModel->getVehicleById($vehiculo);
     }
     public function vehiculos(){
-        //$data["session"]=$this->usuarioModel->isSessionStarted();
         $data["vehiculos"]=$this->vehiculoModel->getVehiculos();
         $data["permissions"]=$this->usuarioModel->validatePermissions($_SESSION["user"]);
         echo $this->render->render("view/vehiculosView.php",$data);
@@ -111,7 +107,6 @@ class SupervisorController
     }
     public function factura(){
         $id=$_GET["id"];
-        //falta getDatosFactura
         $data=$this->viajeModel->getDatosFactura($id);
         $this->render->renderPdf("view/pdfTemplates/facturaView.mustache", $data);
     }

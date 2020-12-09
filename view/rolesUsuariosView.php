@@ -3,7 +3,7 @@
     <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:400px"><br>
             <span onclick="hideModalById('asignar')"
                   class="w3-button w3-red w3-display-topright w3-margin-8" title="Close Modal">&times;</span>
-            <form class="w3-container" action="/administrador/editRol" method="post">
+            <form class="w3-container w3-margin-top" action="/administrador/editRol" method="post">
                 <div class="w3-center">
                     <input type="hidden" id="dni" name="dni">
                     <p><strong>¿Está seguro de que desea otorgarle rol a este usuario?</strong></p>

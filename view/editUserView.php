@@ -43,6 +43,7 @@
         </div>
         <br>
         <div class="w3-container w3-margin-16 w3-center">
+            <a href="/Administrador/usersAdmin" class="w3-button w3-border w3-border-green w3-text-green w3-white">Volver</a>
             <button class="w3-button w3-green" type="submit">Guardar cambios</button>
         </div>
 {{/user}}
