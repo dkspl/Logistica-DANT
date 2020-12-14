@@ -5,12 +5,14 @@ class ChoferController
 {
     private $usuarioModel;
     private $viajeModel;
+    private $costoModel;
     private $render;
 
-    public function __construct($usuarioModel, $viajeModel, $render)
+    public function __construct($usuarioModel, $viajeModel, $costoModel, $render)
     {
         $this->usuarioModel = $usuarioModel;
         $this->viajeModel = $viajeModel;
+        $this->costoModel = $costoModel;
         $this->render = $render;
     }
     public function execute(){
@@ -85,6 +87,7 @@ class ChoferController
         $data["consumo"]=$_POST["consumo"];
         $data["extras"]=$_POST["extras"];
         $final["factura"]=$this->viajeModel->endTravel($data);
+        $this->costoModel->setRealCost($this->viajeModel->getTravel($data["codViaje"])[0]);
         echo $this->render->render("view/choferView.php",$final);
     }
 }

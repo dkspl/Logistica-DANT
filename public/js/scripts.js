@@ -15,6 +15,14 @@ function changeAction(action, formulario){
 function changeViewById(id, display){
     document.getElementById(id).style.display=display;
 }
+function w3Display(id) {
+    var x = document.getElementById(id);
+    if (x.className.indexOf("w3-show") == -1) {
+        x.className += " w3-show";
+    } else {
+        x.className = x.className.replace("w3-show", "");
+    }
+}
 function getImoSubclass(imoClass){
     $.ajax({
         type:"POST",

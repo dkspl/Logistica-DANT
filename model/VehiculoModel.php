@@ -170,8 +170,7 @@ class VehiculoModel
         JOIN Vehiculo
         ON Service.vehiculo=Vehiculo.codVehiculo
         WHERE costo IS NOT NULL
-        GROUP BY Vehiculo.patente
-        ORDER BY Patente";
+        GROUP BY Vehiculo.patente";
         return $this->database->query($sql);
     }
     public function getCantidadDisponibilidad(){

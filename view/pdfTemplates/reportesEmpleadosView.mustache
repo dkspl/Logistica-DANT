@@ -13,14 +13,14 @@
 <h2>Datos generales</h2>
 <p>Fecha de emisión del reporte: {{fecha}}</p>
 <div class="w3-container">
-    <h4>Disponibilidad</h4>
+    <h4>Disponibilidad de choferes</h4>
     <img src="/tmp/charts/choferesDisponibles.png">
     <br>
     <h4>Cantidad de empleados por rol</h4>
     <img src="/tmp/charts/totalRoles.png">
     <br>
     <h4>Recorrido en km por chofer</h4>
-    {{#kmPorChofer}}
+
         <table class="w3-table w3-hoverable w3-striped">
 
             <tr class="w3-blue">
@@ -29,24 +29,22 @@
                 <th>Nombres</th>
                 <th>Total (en km)</th>
             </tr>
-
+    {{#kmPorChofer}}
             <tr>
                 <td>{{dni}}</td>
                 <td>{{apellido}}</td>
                 <td>{{nombre}}</td>
                 <td>{{TotalViajado}}</td>
             </tr>
-        </table>
     {{/kmPorChofer}}
+        </table>
     <img src="/tmp/charts/kmPorChofer.png">
     <br>
     <h4>Usuarios sin habilitar</h4>
     {{^sinAsignar}}
         <p>Todos los empleados están habilitados</p>
     {{/sinAsignar}}
-    {{#sinAsignar}}
     <table class="w3-table w3-hoverable w3-striped">
-
         <tr class="w3-blue">
             <th>DNI</th>
             <th>Apellidos</th>
@@ -54,7 +52,7 @@
             <th>E-mail</th>
             <th>Puesto</th>
         </tr>
-
+        {{#sinAsignar}}
             <tr>
                 <td>{{dni}}</td>
                 <td>{{apellido}}</td>
@@ -62,9 +60,9 @@
                 <td>{{email}}</td>
                 <td>{{rol}}</td>
             </tr>
-
-    </table>
     {{/sinAsignar}}
+    </table>
+    <br>
     <table class="w3-table w3-hoverable w3-striped">
         <tr>
             {{#eliminados}}

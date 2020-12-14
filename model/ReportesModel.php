@@ -9,9 +9,22 @@ class ReportesModel
         $this->database = $database;
     }
 
-    public function graphAvailabilityReports($data){
+    public function graphDriverAvailabilityReports($data){
         $chart = new PieChart(700, 300);
         $filename = "tmp/charts/choferesDisponibles.png";
+        $dataSet = new XYDataSet();
+        $dataSet->addPoint(new Point("Disponibles (".$data["disponibilidad"]["disponibles"].")",
+            $data["disponibilidad"]["disponibles"]));
+        $dataSet->addPoint(new Point("No disponibles (".$data["disponibilidad"]["noDisponibles"].")",
+            $data["disponibilidad"]["noDisponibles"]));
+        $chart->setDataSet($dataSet);
+
+        $chart->setTitle("Disponibilidad de choferes (".$data["fecha"].")");
+        $chart->render($filename);
+    }
+    public function graphVehicleAvailabilityReports($data){
+        $chart = new PieChart(700, 300);
+        $filename = "tmp/charts/vehiculosDisponibles.png";
         $dataSet = new XYDataSet();
         $dataSet->addPoint(new Point("Disponibles (".$data["disponibilidad"]["disponibles"].")",
             $data["disponibilidad"]["disponibles"]));
@@ -50,6 +63,45 @@ class ReportesModel
 
         $chart->setDataSet($dataSet);
         $chart->setTitle("Km recorridos por chofer (".$data["fecha"].")");
+        $chart->render($filename);
+    }
+    public function graphVehicleCost($data){
+        $chart = new VerticalBarChart(600, 200);
+        $filename = "tmp/charts/costoServicePorVehiculo.png";
+        $dataSet = new XYDataSet();
+        foreach($data["gastoService"] as $valor){
+            $dataSet->addPoint(new Point($valor["Patente"],
+                $valor["Total"]));
+        }
+
+        $chart->setDataSet($dataSet);
+        $chart->setTitle("Gasto de service por vehículo (".$data["fecha"].")");
+        $chart->render($filename);
+    }
+    public function graphAverageFuel($data){
+        $chart = new VerticalBarChart(600, 200);
+        $filename = "tmp/charts/consumoPromedio.png";
+        $dataSet = new XYDataSet();
+        foreach($data["promedioConsumo"] as $valor){
+            $dataSet->addPoint(new Point($valor["Vehiculo"],
+                round($valor["Promedio"],2)));
+        }
+
+        $chart->setDataSet($dataSet);
+        $chart->setTitle("Consumo promedio de combustible (en litros) (".$data["fecha"].")");
+        $chart->render($filename);
+    }
+    public function graphTotalKm($data){
+        $chart = new VerticalBarChart(600, 200);
+        $filename = "tmp/charts/kmPorVehiculo.png";
+        $dataSet = new XYDataSet();
+        foreach($data["kmRecorridos"] as $valor){
+            $dataSet->addPoint(new Point($valor["Vehiculo"],
+                round($valor["TotalViajado"],2)));
+        }
+
+        $chart->setDataSet($dataSet);
+        $chart->setTitle("Km recorridos por vehículo (".$data["fecha"].")");
         $chart->render($filename);
     }
 }

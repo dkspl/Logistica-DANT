@@ -23,10 +23,6 @@
             <span>Destino:</span>
             <span class="w3-input">{{destino}}</span>
         </div>
-        <div class="w3-section">
-            <span>Fecha de carga:</span>
-            <span class="w3-input">{{fcarga}}</span>
-        </div>
         <!--<div class="w3-section">
             <span>Última actualización:</span>
             <span class="w3-input"></span>
@@ -57,27 +53,27 @@
             <input type="hidden" value="" name="longitud" id="long">
             <label class="w3-section">
                 <span>Consumo de combustible (en litros):</span>
-                <input type="number" class="w3-input" name="consumo">
+                <input type="number" class="w3-input" name="consumo" step="0.01" min="0" required>
             </label>
             <br>
             <label class="w3-section">
                 <span>Gastos en viáticos (en pesos argentinos):</span>
-                <input type="number" class="w3-input" name="viaticos">
+                <input type="number" class="w3-input" name="viaticos" step="0.01" min="0" required>
             </label>
             <br>
             <label class="w3-section">
                 <span>Gastos en peajes (en pesos argentinos):</span>
-                <input type="number" class="w3-input" name="peajes">
+                <input type="number" class="w3-input" name="peajes" step="0.01" min="0" required>
             </label>
             <br>
             <label class="w3-section">
                 <span>Gastos en pesajes (en pesos argentinos):</span>
-                <input type="number" class="w3-input" name="pesajes">
+                <input type="number" class="w3-input" name="pesajes" step="0.01" min="0" required>
             </label>
             <br>
             <label class="w3-section">
                 <span>Gastos extras (en pesos argentinos):</span>
-                <input type="number" class="w3-input" name="extras">
+                <input type="number" class="w3-input" name="extras" step="0.01" min="0" required>
             </label>
         </div>
         <br>
@@ -102,17 +98,17 @@
             <input type="hidden" value="" name="longitud" id="longComb">
             <label class="w3-section">
                 <span>Cantidad de combustible cargado:</span>
-                <input type="number" class="w3-input" name="cantidad">
+                <input type="number" class="w3-input" name="cantidad" step="0.01" min="0" required>
             </label>
             <br>
             <label class="w3-section">
                 <span>Importe:</span>
-                <input type="number" class="w3-input" name="importe">
+                <input type="number" class="w3-input" name="importe" step="0.01" min="0" required>
             </label>
             <br>
             <label class="w3-section">
                 <span>Combustible consumido desde última actualización (en litros):</span>
-                <input type="number" class="w3-input" name="consumo">
+                <input type="number" class="w3-input" name="consumo" step="0.01" min="0" required>
             </label>
         </div>
         <br>

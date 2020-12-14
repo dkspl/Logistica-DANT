@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="/public/img/logo.png" />
+    <title>Reporte de vehiculos</title>
+</head>
+<body style="font-size: 12pt;font-family: Serif">
+
+<h2>Datos generales</h2>
+<p>Fecha de emisión del reporte: {{fecha}}</p>
+<div class="w3-container">
+    <h4>Disponibilidad de vehiculos</h4>
+    <img src="/tmp/charts/vehiculosDisponibles.png">
+    <br>
+    <h4>Gasto en service</h4>
+    <table class="w3-table w3-hoverable w3-striped">
+
+        <tr class="w3-blue">
+            <th>Patente</th>
+            <th>Total (en pesos argentinos)</th>
+        </tr>
+        {{#gastoService}}
+            <tr>
+                <td>{{Patente}}</td>
+                <td>{{Total}}</td>
+            </tr>
+        {{/gastoService}}
+    </table>
+    <br>
+    <img src="/tmp/charts/costoServicePorVehiculo.png">
+    <br>
+    <h4>Consumo promedio de combustible (en litros)</h4>
+    <table class="w3-table w3-hoverable w3-striped">
+        <tr class="w3-purple">
+            <th>Patente</th>
+            <th>Total (en pesos argentinos)</th>
+        </tr>
+        {{#promedioConsumo}}
+            <tr>
+                <td>{{Vehiculo}}</td>
+                <td>{{Promedio}}</td>
+            </tr>
+        {{/promedioConsumo}}
+    </table>
+    <br>
+    <img src="/tmp/charts/consumoPromedio.png">
+    <br>
+    <br>
+    <h4>Kilómetros recorridos por vehículo</h4>
+    <table class="w3-table w3-hoverable w3-striped">
+        <tr class="w3-aqua">
+            <th>Patente</th>
+            <th>Km</th>
+        </tr>
+        {{#kmRecorridos}}
+            <tr>
+                <td>{{Vehiculo}}</td>
+                <td>{{TotalViajado}}</td>
+            </tr>
+        {{/kmRecorridos}}
+    </table>
+    <br>
+    <img src="/tmp/charts/kmPorVehiculo.png">
+</div>
+
+</body>
+</html>

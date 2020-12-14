@@ -191,21 +191,26 @@ INSERT INTO Empleado (dni, nombre, apellido, email, password, fnac, rol, estado)
 (12345678, 'User', 'Admin', 'admin@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', '1931-09-18', 'administrador', 1),
 (11111111, 'User', 'Supervisor', 'supervisor@gmail.com', 'b59c67bf196a4758191e42f76670ceba', '1986-09-22', 'supervisor', 1),
 (22222222, 'User', 'Mecanico', 'mecanico@gmail.com', '934b535800b1cba8f96a5d72f72f1611', '1975-09-23', 'mecanico', 1),
-(33333333, 'User1', 'Chofer', 'chofer@gmail.com', '2be9bd7a3434f7038ca27d1918de58bd', '1990-10-12', 'chofer', 1),
-(44444444, 'User2', 'Chofer', 'sinrol@gmail.com', 'dbc4d84bfcfe2284ba11beffb853a8c4', '1950-12-05', 'chofer', 1),
-(55555555, 'User3', 'Chofer', 'chofer@gmail.com', '6074c6aa3488f3c2dddff2a7ca821aab', '1985-12-12', 'chofer', 1),
-(66666666, 'User4', 'Chofer', 'chofer@gmail.com', 'e9510081ac30ffa83f10b68cde1cac07', '1995-10-04', 'chofer', 1),
-(77777777, 'User5', 'Chofer', 'chofer@gmail.com', 'd79c8788088c2193f0244d8f1f36d2db', '1994-10-31', 'chofer', 1);
+(33333333, 'User', 'Chofer1', 'chofer1@gmail.com', '2be9bd7a3434f7038ca27d1918de58bd', '1990-10-12', 'chofer', 1),
+(44444444, 'User', 'Chofer2', 'chofer2@gmail.com', 'dbc4d84bfcfe2284ba11beffb853a8c4', '1950-12-05', 'chofer', 1),
+(55555555, 'User', 'Chofer3', 'chofer3@gmail.com', '6074c6aa3488f3c2dddff2a7ca821aab', '1985-12-12', 'chofer', 1),
+(66666666, 'User', 'Chofer4', 'chofer4@gmail.com', 'e9510081ac30ffa83f10b68cde1cac07', '1995-10-04', 'chofer', 1),
+(77777777, 'User', 'Chofer5', 'chofer5@gmail.com', 'd79c8788088c2193f0244d8f1f36d2db', '1994-10-31', 'chofer', 1),
+(99888777, 'User', 'Admin2', 'admin2@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', '1950-09-18', 'administrador', 0),
+(88777666, 'User', 'Mecanico2', 'mecanico2@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', '1990-09-18', 'mecanico', 0),
+(77666555, 'User', 'Mecanico3', 'mecanico3@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', '1950-09-18', 'mecanico', 0),
+(88888888, 'User', 'Chofer6', 'chofer6@gmail.com', 'cf79ae6addba60ad018347359bd144d2', '1980-07-10', 'chofer', 0);
 
 INSERT INTO Mecanico (dniMec, matricula, disponibilidad)
-VALUES (22222222, 1, 1);
+VALUES (22222222, 1, 1), (88777666, 2, 0),(77666555, 3, 0);
 
 INSERT INTO Chofer (dniChof, tipoLicencia, disponibilidad)
 VALUES (33333333, 'A', 1),
 (44444444, 'B', 1),
 (55555555, 'C', 1),
 (66666666, 'D', 1),
-(77777777, 'E', 1);
+(77777777, 'E', 1),
+(88888888, 'F', 1);
 
 INSERT INTO Vehiculo (patente, nroChasis, marca, modelo,kmTotales, anoFabricacion, fechaService, tipo, estado) VALUES
 ('AA100AS', 585822, 'IVECO', 'Cursor', 13000, 2005, '2020-12-10', 'arrastrado', 1),
@@ -224,7 +229,7 @@ INSERT INTO Vehiculo (patente, nroChasis, marca, modelo,kmTotales, anoFabricacio
 ('AD200XS', 57193968, 'IVECO', 'Cursor', 60, 2009, '2020-08-01', 'tractor', 1),
 ('AD678QD', 23849041, 'M.BENZ', 'Actros 1846', 1500, 2016, '2021-01-31', 'tractor', 1);
 
-INSERT INTO Tractor (`codTractor`, nroMotor, consumo)
+INSERT INTO Tractor (codTractor, nroMotor, consumo)
 VALUES(2,69904367, 30.0),
 (3,82039512, 30.0),
 (6,32041290, 30.0),
@@ -273,6 +278,11 @@ INSERT INTO ImoSubclass VALUES (1, 1, 'Objetos con riesgo de explosión de toda 
 (18, 4, 'Materiales fisionables', 7),
 (19, 1, 'Corrosivos', 8),
 (20, 1, 'Objetos peligrosos diversos', 9);
+
+INSERT INTO Cliente (cuit, denominacion, telefono, direccion, email) VALUES
+(30123456780,'Acme Corporation',12345678,'Coyote 123', 'acme@acme.org'),
+(30876543210,'El Barto',44446666,'742 Evergreen Terrace', 'barto@gmail.com'),
+(30444444449,'E-Corp',99966620,'135 East 57th Street', 'samar.swailem@e-corp-usa.com');
 
 DELIMITER //
 CREATE TRIGGER t_actualizarEstadosPorViajeCreado

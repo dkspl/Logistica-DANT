@@ -132,15 +132,17 @@ class UsuarioModel
         $mecanico=0;
         $chofer=0;
         for($i=0;$i<sizeof($empleados);$i++){
-            switch($empleados[$i]["rol"]){
-                case "administrador": $admin++;
-                    break;
-                case "supervisor": $supervisor++;
-                    break;
-                case "mecanico": $mecanico++;
-                    break;
-                case "chofer": $chofer++;
-                    break;
+            if($empleados[$i]["estado"]!=0){
+                switch($empleados[$i]["rol"]){
+                    case "administrador": $admin++;
+                        break;
+                    case "supervisor": $supervisor++;
+                        break;
+                    case "mecanico": $mecanico++;
+                        break;
+                    case "chofer": $chofer++;
+                        break;
+                }
             }
         }
         return array("administradores"=>$admin,

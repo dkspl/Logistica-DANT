@@ -6,13 +6,17 @@ class SupervisorController
     private $usuarioModel;
     private $viajeModel;
     private $vehiculoModel;
+    private $cargaModel;
+    private $costoModel;
     private $render;
 
-    public function __construct($usuarioModel, $viajeModel, $vehiculoModel, $render)
+    public function __construct($usuarioModel, $viajeModel, $vehiculoModel, $cargaModel, $costoModel, $render)
     {
         $this->usuarioModel = $usuarioModel;
         $this->viajeModel = $viajeModel;
         $this->vehiculoModel = $vehiculoModel;
+        $this->cargaModel = $cargaModel;
+        $this->costoModel = $costoModel;
         $this->render = $render;
     }
     public function execute(){
@@ -22,6 +26,7 @@ class SupervisorController
         $data["arrastrados"]=$this->vehiculoModel->getArrastradosDisponibles();
         $data["choferes"]=$this->usuarioModel->getChoferesDisponibles();
         $data["tractores"]=$this->vehiculoModel->getTractoresDisponibles();
+        $data["clientes"]=$this->viajeModel->getClientes();
         echo $this->render->render("view/startTravelView.php",$data);
     }
     public function travels(){
@@ -30,6 +35,7 @@ class SupervisorController
         echo $this->render->render("view/travelsView.php",$data);
     }
     public function setTravel(){
+        $data["cliente"]=$_POST["cliente"];
         $data["cuit"]=$_POST["cuit"];
         $data["denominacion"]=$_POST["denominacion"];
         $data["direccion"]=$_POST["direccion"];
@@ -63,7 +69,11 @@ class SupervisorController
         }
 
         $final["viaje"]=$this->viajeModel->setTravel($data);
-        $final["viajes"]=$this->viajeModel->getTravels();
+        if($final["viaje"]!=0){
+            $this->cargaModel->setCarga($final["viaje"],$data);
+            $this->costoModel->setRelativeCost($this->viajeModel->getTravel($final["viaje"])[0],$data);
+        }
+        $final["viajes"]=$this->viajeModel->isModifiableList($this->viajeModel->getTravels());
         $final["permissions"]=$this->usuarioModel->validatePermissions($_SESSION["user"]);
         echo $this->render->render("view/travelsView.php",$final);
     }
@@ -80,9 +90,6 @@ class SupervisorController
         $data["tractor"]=$_POST["tractor"];
         $data["arrastrado"]=$_POST["arrastrado"];
         $this->viajeModel->cancelTravel($data);
-        $this->usuarioModel->changeStatus($data["chofer"]);
-        //$this->vehiculoModel->setDisponibilidad($data["tractor"]);
-        //$this->vehiculoModel->setDisponibilidad($data["arrastrado"]);
         header("Location: /Supervisor/travels");
         exit();
     }
@@ -102,17 +109,32 @@ class SupervisorController
     }
     public function travel(){
         $id=$_GET["id"];
-        $data=$this->viajeModel->getDatosProforma($id);
+        $data["travel"]=$this->viajeModel->getTravel($id)[0];
+        $data["cliente"]=$this->viajeModel->getClienteFrom($id)[0];
+        $data["chofer"]=$this->viajeModel->getChoferFrom($id)[0];
+        $data["tractor"]=$this->viajeModel->getTractorFrom($id)[0];
+        $data["arrastrado"]=$this->viajeModel->getArrastradoFrom($id)[0];
+        $data["costo"]=$this->costoModel->getCostByTypeAndTravel($id,'relativo')[0];
+        $data["importe"]=$this->costoModel->getCostoTotalPorTipoYViaje($id,'relativo');
+        $data["carga"]=$this->cargaModel->getCargaByTravel($id)[0];
         $this->render->renderPdf("view/pdfTemplates/proformaView.mustache", $data);
     }
     public function factura(){
         $id=$_GET["id"];
-        $data=$this->viajeModel->getDatosFactura($id);
+        $data["travel"]=$this->viajeModel->getTravel($id)[0];
+        $data["cliente"]=$this->viajeModel->getClienteFrom($id)[0];
+        $data["costo"]=$this->costoModel->getCostByTypeAndTravel($id,'real')[0];
+        $data["importe"]=$this->costoModel->getCostoTotalPorTipoYViaje($id,'real');
+        $data["carga"]=$this->cargaModel->getCargaByTravel($id)[0];
         $this->render->renderPdf("view/pdfTemplates/facturaView.mustache", $data);
     }
     public function getImoSubclass(){
         $id=$_POST["id"];
-        $result = $this->viajeModel->getImoSubclassByClass($id);
+        $result = $this->cargaModel->getImoSubclassByClass($id);
+        echo json_encode($result, JSON_UNESCAPED_UNICODE);
+    }
+    public function getImoClasses(){
+        $result = $this->cargaModel->getImoClasses();
         echo json_encode($result, JSON_UNESCAPED_UNICODE);
     }
 }

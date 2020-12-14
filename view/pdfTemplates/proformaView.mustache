@@ -1,3 +1,13 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Proforma</title>
+</head>
+<body style="font-size: 10pt;font-family: Serif">
 <div class="w3-container w3-card w3-white w3-round">
     <h3>DANT - Dirección Autónoma Nacional de Transporte</h3>
     <img src="/public/img/logo.png" class="w3-left w3-margin-right" style="width:150px;float:right">
@@ -5,7 +15,6 @@
     <span class="w3-right w3-opacity">Calle Falsa 123</span><br>
     <span class="w3-right w3-opacity">nohayproblema@dant.com.ar</span><br>
     <span class="w3-right w3-opacity">(011) 0303456</span>
-    <title>Proforma</title>
 </div>
 
 <div class="w3-container w3-margin">
@@ -17,10 +26,6 @@
                     <td>DENOMINACIÓN: {{denominacion}}</td>
                     <td>CUIT: {{cuit}}</td>
                 </tr>
-                <!--<tr>
-                <td>Combustible</td>
-                <td>{{combustible}}</td>
-            </tr>-->
                 <tr>
                     <td>DIRECCIÓN: </td>
                     <td>{{direccion}}</td>
@@ -36,7 +41,7 @@
 <div class="w3-container w3-margin">
     <div class="w3-container w3-white">
         {{#travel}}
-        <h3>Viaje</h3>
+            <h3>Viaje</h3>
             <table class="w3-table w3-striped">
                 <tr>
                     <td>ORIGEN: {{origen}}</td>
@@ -44,10 +49,6 @@
                 <tr>
                     <td>DESTINO: {{destino}}</td>
                 </tr>
-                <!--<tr>
-                <td>Combustible</td>
-                <td>{{combustible}}</td>
-            </tr>-->
                 <tr>
                     <td>ETA: {{eta}}</td>
                     <td>ETD: {{etd}}</td>
@@ -60,32 +61,32 @@
     <div class="w3-container w3-white">
         <h3>Costo estimado</h3>
         {{#costo}}
-        <table class="w3-table w3-striped">
-            <tr>
-                <th>Razón</th>
-                <th>Costo estimado</th>
-            </tr>
-            <tr>
-                <td>Kilómetros recorridos</td>
-                <td>{{km}}</td>
-            </tr>
-            <tr>
-                <td>Combustible</td>
-                <td>{{consumo}}</td>
-            </tr>
-            <tr>
-                <td>Hazard</td>
-                <td>{{hazard}}</td>
-            </tr>
-            <tr>
-                <td>Reefer</td>
-                <td>{{reefer}}</td>
-            </tr>
-            <tr class="w3-green">
-                <td><b>Total</b></td>
-                <td><b>{{#importe}}{{Total}}{{/importe}}</b></td>
-            </tr>
-        </table>
+            <table class="w3-table w3-striped">
+                <tr>
+                    <th>Razón</th>
+                    <th>Costo estimado</th>
+                </tr>
+                <tr>
+                    <td>Kilómetros recorridos</td>
+                    <td>{{km}}</td>
+                </tr>
+                <tr>
+                    <td>Combustible</td>
+                    <td>{{consumo}}</td>
+                </tr>
+                <tr>
+                    <td>Hazard</td>
+                    <td>{{hazard}}</td>
+                </tr>
+                <tr>
+                    <td>Reefer</td>
+                    <td>{{reefer}}</td>
+                </tr>
+                <tr class="w3-green">
+                    <td><b>Total</b></td>
+                    <td><b>{{#importe}}{{Total}}{{/importe}}</b></td>
+                </tr>
+            </table>
         {{/costo}}
     </div>
 </div>
@@ -99,27 +100,18 @@
                     <td>APELLIDO: {{apellido}}</td>
                     <td>NOMBRE: {{nombre}}</td>
                 </tr>
-                <!--<tr>
-                <td>Combustible</td>
-                <td>{{combustible}}</td>
-            </tr>-->
-
             </table>
         {{/chofer}}
     </div>
     <br>
     <div class="w3-container w3-white">
-            {{#tractor}}
+        {{#tractor}}
             <h3>Tractor</h3>
             <table class="w3-table w3-striped">
                 <tr>
                     <td>PATENTE: {{patente}}</td>
                     <td>N° DE CHASIS: {{nroChasis}}</td>
                 </tr>
-                <!--<tr>
-                <td>Combustible</td>
-                <td>{{combustible}}</td>
-            </tr>-->
                 <tr>
                     <td>MARCA: {{marca}}</td>
                     <td>MODELO: {{modelo}}</td>
@@ -129,7 +121,7 @@
                     <td>AÑO DE FABRICACIÓN: {{anoFabricacion}}</td>
                 </tr>
             </table>
-            {{/tractor}}
+        {{/tractor}}
     </div>
     <br>
     <div class="w3-container w3-white">
@@ -140,10 +132,6 @@
                     <td>PATENTE: {{patente}}</td>
                     <td>N° DE CHASIS: {{nroChasis}}</td>
                 </tr>
-                <!--<tr>
-                <td>Combustible</td>
-                <td>{{combustible}}</td>
-            </tr>-->
                 <tr>
                     <td>MARCA: {{marca}}</td>
                     <td>MODELO: {{modelo}}</td>
@@ -159,8 +147,9 @@
 <div class="w3-container w3-margin">
     <div class="w3-container w3-white">
         <h3>Código QR</h3>
-    {{#travel}}
-        <img src="/tmp/{{codViaje}}.png">
-    {{/travel}}
+        {{#travel}}
+            <img src="/tmp/{{codViaje}}.png">
+        {{/travel}}
     </div>
 </div>
+</body>

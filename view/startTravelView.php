@@ -5,7 +5,7 @@
 <div class="w3-container w3-margin">
     <form method="post" action="/Supervisor/setTravel" class="w3-container w3-card-4 w3-padding-16 w3-white">
         <div>
-            <button type="button" onclick="myFunction('datosViaje')" class="w3-button w3-red w3-block w3-left-align w3-border">
+            <button type="button" onclick="w3Display('datosViaje')" class="w3-button w3-red w3-block w3-left-align w3-border">
                 Datos del viaje</button>
             <div id="datosViaje" class="w3-container w3-hide w3-show" style="height: 100%;width=100%">
                 <label class="w3-container">Origen:
@@ -13,7 +13,7 @@
                            placeholder="Presione aquí para buscar el lugar de origen"
                            name="textOrigen" id="textOr" readonly="readonly"
                            onclick="changeViewById('mapOrigen', 'block');changeViewById('buttonOr','block');
-                           showMapFrom('mapOrigen', 'latOr', 'longOr', 'textOr')"/>
+                           showMapFrom('mapOrigen', 'latOr', 'longOr', 'textOr')" required/>
                     <div class="mapWrapper">
                         <div id="mapOrigen" class="w3-container" style="display: none;height: 300px">
                         </div>
@@ -28,7 +28,7 @@
                            name="textDestino" id="textDes" readonly="readonly"
                            placeholder="Presione aquí para buscar el lugar de destino"
                            onclick="changeViewById('mapDestino', 'block');changeViewById('buttonDes','block');
-                           showMapFrom('mapDestino', 'latDes', 'longDes', 'textDes')"/>
+                           showMapFrom('mapDestino', 'latDes', 'longDes', 'textDes')" required/>
                     <div class="mapWrapper">
                         <div id="mapDestino" class="w3-container" style="display: none;height: 300px">
                         </div>
@@ -41,11 +41,11 @@
 
                 <label class="w3-container">
                     <span>ETA: </span>
-                    <input class="w3-input w3-border" type="datetime-local" name="eta">
+                    <input class="w3-input w3-border" type="datetime-local" name="eta" required>
                 </label>
                 <label class="w3-container">
                     <span class="w3-block">ETD: </span>
-                    <input class="w3-input w3-border" type="datetime-local" name="etd">
+                    <input class="w3-input w3-border" type="datetime-local" name="etd" required>
                 </label>
                 <label class="w3-container">
                     <span class="w3-block">Chofer: </span>
@@ -68,9 +68,25 @@
             </div>
         </div>
         <div>
-            <button type="button" onclick="myFunction('datosCliente')" class="w3-button w3-red w3-block w3-left-align w3-border">
+            <button type="button" onclick="w3Display('datosCliente')" class="w3-button w3-red w3-block w3-left-align w3-border">
                 Datos del cliente</button>
+
             <div id="datosCliente" class="w3-container w3-hide">
+                <div id="clientes">
+                    <h5><b>Opción 1:</b> elija un cliente ya existente.</h5>
+                    <label class="w3-container">
+                        <span>Cliente: </span>
+                        <select class="w3-select w3-border" id="selCliente" name="cliente">
+                            <option value="" selected>--Nuevo cliente--</option>
+                            {{#clientes}}
+                            <option value="{{cuit}}">{{cuit}} - {{denominacion}}</option>
+                            {{/clientes}}
+                        </select>
+                    </label>
+                </div>
+                <h5><b>Opción 2:</b> ingrese un nuevo cliente.</h5>
+                <div id="clienteNuevo">
+
                     <label class="w3-container">
                         <span class="w3-block">CUIT: </span>
                         <input class="w3-input w3-border" type="text" name="cuit">
@@ -99,15 +115,16 @@
                         <span class="w3-block">Contacto 2: </span>
                         <input class="w3-input w3-border" type="number" name="contacto2">
                     </label>
+                </div>
             </div>
         </div>
         <div>
-            <button type="button" onclick="myFunction('datosCarga')" class="w3-button w3-red w3-block w3-left-align w3-border">
+            <button type="button" onclick="w3Display('datosCarga')" class="w3-button w3-red w3-block w3-left-align w3-border">
                 Datos de la carga</button>
             <div id="datosCarga" class="w3-container w3-hide">
                 <label class="w3-container">
                     <span class="w3-block">Peso neto: </span>
-                    <input class="w3-input w3-border" type="number" name="pesoNeto">
+                    <input class="w3-input w3-border" type="number" name="pesoNeto" required>
                 </label>
                 <div id="hazardRadio">
                     <label class="w3-container">
@@ -152,6 +169,14 @@
 <script src="/public/js/ubicaciones.js"></script>
 <script>
 
+    $("#selCliente").change(function () {
+        if($(this).val() != ""){
+            $("#clienteNuevo").css("display", "none");
+        }
+        else{
+            $("#clienteNuevo").removeAttr("style");
+        }
+    });
     $("input[name='reefer']" ).change(function() {
         if ($(this).val() == 1) {
             $( "#reeferRadio" ).append( "<label class='w3-container' id='temp' >\n" +
@@ -163,7 +188,6 @@
             $("label").remove("#temp");
         }
     });
-
     $(document).on("click", "input[name='hazard']", function(){
         $("label").remove("#imoC");
         $("label").remove("#imoS");
@@ -195,15 +219,6 @@
             getImoSubclass($("#imoClass").val());
         }
     });
-
-    function myFunction(id) {
-        var x = document.getElementById(id);
-        if (x.className.indexOf("w3-show") == -1) {
-            x.className += " w3-show";
-        } else {
-            x.className = x.className.replace("w3-show", "");
-        }
-    }
 </script>
 {{> footer}}
 

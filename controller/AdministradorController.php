@@ -166,18 +166,27 @@ class AdministradorController
     public function employeeStats(){
         $data["fecha"]=date('d-m-Y h:i:s A');
         $data["disponibilidad"]=$this->administradorModel->getCantidadChoferesPorDisponibilidad();
-        $data["graficoDisponibilidad"]=$this->reportesModel->graphAvailabilityReports($data);
+        $data["graficoDisponibilidad"]=$this->reportesModel->graphDriverAvailabilityReports($data);
         $data["cantidadRol"]=$this->usuarioModel->getCantidadEmpleadosPorRol();
         $data["graficoRol"]=$this->reportesModel->graphRoleReports($data);
         $data["sinAsignar"]=$this->usuarioModel->getUsuariosSinAsignar();
         $data["eliminados"]=$this->usuarioModel->getUsuariosEliminados();
         $data["kmPorChofer"]=$this->viajeModel->getKmRecorridosPorChofer();
         $data["graficoRol"]=$this->reportesModel->graphKmDrivers($data);
-        echo $this->render->renderPdf("view/pdfTemplates/reportesEmpleadosView.mustache",$data);
+        echo $this->render->renderLandscapePdf("view/pdfTemplates/reportesEmpleadosView.mustache",$data);
     }
-    public function vehicleStats(){
-        $data["fecha"]=date('d-m-Y h:i:s A');
-        echo $this->render->renderPdf("view/pdfTemplates/reportesVehiculosView.mustache",$data);
+    public function vehicleStats()
+    {
+        $data["fecha"] = date('d-m-Y h:i:s A');
+        $data["disponibilidad"] = $this->vehiculoModel->getCantidadDisponibilidad();
+        $data["graficoDisponibilidad"] = $this->reportesModel->graphVehicleAvailabilityReports($data);
+        $data["gastoService"] = $this->vehiculoModel->getTotalGastoPorVehiculo();
+        $data["graficoService"] = $this->reportesModel->graphVehicleCost($data);
+        $data["promedioConsumo"] = $this->viajeModel->getConsumoPromedioEnViajes();
+        $data["graficoService"] = $this->reportesModel->graphAverageFuel($data);
+        $data["kmRecorridos"] = $this->viajeModel->getKmRecorridosEnViaje();
+        $data["graficoKm"] = $this->reportesModel->graphTotalKm($data);
+        echo $this->render->renderLandscapePdf("view/pdfTemplates/reportesVehiculosView.mustache",$data);
     }
 
 }

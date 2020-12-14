@@ -7,6 +7,8 @@ include_once ("model/UsuarioModel.php");
 include_once ("model/AdministradorModel.php");
 include_once ("model/ViajeModel.php");
 include_once ("model/VehiculoModel.php");
+include_once ("model/CostoModel.php");
+include_once ("model/CargaModel.php");
 include_once ("model/ReportesModel.php");
 
 include_once ("controller/UsuarioController.php");
@@ -74,19 +76,10 @@ class Configuration{
         $usuarioModel = $this->getUsuarioModel();
         $viajeModel = $this->getViajeModel();
         $vehiculoModel = $this->getVehiculoModel();
-        return new SupervisorController($usuarioModel, $viajeModel, $vehiculoModel, $this->getRender());
-    }
-    public function getViajeModel(){
-        $database = $this->getDatabase();
-        return new ViajeModel($database);
-    }
-    public function getVehiculoModel(){
-        $database = $this->getDatabase();
-        return new VehiculoModel($database);
-    }
-    public function getReportesModel(){
-        $database = $this->getDatabase();
-        return new ReportesModel($database);
+        $cargaModel = $this->getCargaModel();
+        $costoModel = $this->getCostoModel();
+        return new SupervisorController($usuarioModel, $viajeModel, $vehiculoModel,
+            $cargaModel, $costoModel, $this->getRender());
     }
     public function getMecanicoController(){
         $viajeModel = $this->getViajeModel();
@@ -97,6 +90,28 @@ class Configuration{
     public function getChoferController(){
         $usuarioModel= $this->getUsuarioModel();
         $viajeModel= $this->getViajeModel();
-        return new ChoferController($usuarioModel, $viajeModel, $this->getRender());
+        $costoModel= $this->getCostoModel();
+        return new ChoferController($usuarioModel, $viajeModel, $costoModel, $this->getRender());
     }
+    public function getViajeModel(){
+        $database = $this->getDatabase();
+        return new ViajeModel($database);
+    }
+    public function getVehiculoModel(){
+        $database = $this->getDatabase();
+        return new VehiculoModel($database);
+    }
+    public function getCostoModel(){
+        $database = $this->getDatabase();
+        return new CostoModel($database);
+    }
+    public function getCargaModel(){
+        $database = $this->getDatabase();
+        return new CargaModel($database);
+    }
+    public function getReportesModel(){
+        $database = $this->getDatabase();
+        return new ReportesModel($database);
+    }
+
 }
