@@ -158,4 +158,28 @@ class VehiculoModel
         WHERE patente like '".$data["patente"]."'";
         $this->database->execute($sql);
     }
+    public function getTotalGastoService(){
+        $sql="SELECT SUM(Service.costo) as Total
+        FROM Service
+        WHERE Service.costo IS NOT NULL";
+        return $this->database->query($sql);
+    }
+    public function getTotalGastoPorVehiculo(){
+        $sql="SELECT Service.vehiculo as Patente, SUM(Service.costo) as Total
+        FROM Service
+        WHERE costo IS NOT NULL
+        GROUP BY Service.vehiculo
+        ORDER BY Patente";
+        return $this->database->query($sql);
+    }
+    public function getCantidadDisponibilidad(){
+        $disponibles=0;
+        $noDisponibles=0;
+        $data=$this->getVehiculos();
+        for($i=0;$i<sizeof($data);$i++){
+            $data[$i]["estado"]==1 ? $disponibles++ : $noDisponibles++;
+        }
+        return array("disponibles"=>$disponibles, "noDisponibles"=>$noDisponibles);
+    }
+
 }

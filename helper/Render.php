@@ -26,4 +26,14 @@ class Render{
         $mpdf->writeHtml($plantilla);
         $mpdf->output();
     }
+    public function renderLandscapePdf($contentFile , $data = array() ){
+        $plantilla=$this->render($contentFile,$data);
+        $mpdf=new \Mpdf\Mpdf(['orientation' => 'L']);
+        $css=file_get_contents("public/css/styles.css");
+        $w3css=file_get_contents("https://www.w3schools.com/w3css/4/w3.css");
+        $mpdf->writeHtml($css, \Mpdf\HTMLParserMode::HEADER_CSS);
+        $mpdf->writeHtml($w3css, \Mpdf\HTMLParserMode::HEADER_CSS);
+        $mpdf->writeHtml($plantilla);
+        $mpdf->output();
+    }
 }

@@ -9,7 +9,7 @@ class ViajeModel
         $this->database = $database;
     }
 
-    /*Travel*/
+    /*Viaje*/
     public function getTravels(){
         return $this->database->query("SELECT * FROM Viaje");
     }
@@ -33,6 +33,17 @@ class ViajeModel
             return $idViaje;
         }
         return false;
+    }
+
+    public function isModifiableList($data){
+        for ($i=0; $i<sizeof($data);$i++){
+            $data[$i]["isModifiable"]=$this->isModifiable($data[$i]);
+        }
+        return $data;
+    }
+
+    public function isModifiable($viaje){
+        return (strcmp($viaje["estado"],'cancelado')!=0) && (strcmp($viaje["estado"],'finalizado')!=0);
     }
 
     public function setCliente($data)
@@ -164,11 +175,13 @@ class ViajeModel
         $llegada=date('Y-m-d');
         $kmFinal=$this->getSumaFrom($data["codViaje"], "kmRecorridos")[0]["sumakmRecorridos"];
         $consumoFinal=$this->getSumaFrom($data["codViaje"],"consumo")[0]["sumaconsumo"];
+        $desvio=$this->calculateDesvio($data["codViaje"],$kmFinal);
         $sql = "UPDATE Viaje SET 
         fllegada = '".$llegada."',
         estado = 'finalizado',
         kmTotales =  ".$kmFinal.", 
-        consumoTotal = ".$consumoFinal." 
+        consumoTotal = ".$consumoFinal.",
+        desvio = ".$desvio."  
         WHERE codViaje = ".$data["codViaje"]." AND fllegada IS NULL";
         $this->database->execute($sql);
         $this->setRealCost($data["codViaje"]);
@@ -214,9 +227,13 @@ class ViajeModel
             FROM Cliente INNER JOIN Viaje ON Cliente.cuit=Viaje.cliente WHERE Viaje.codViaje=".$viaje;
         return $this->database->query($sql);
     }
+    public function calculateDesvio($codViaje,$kmFinal){
+        $datosViaje=$this->getTravel($codViaje)[0];
+        $desvio=$kmFinal-$datosViaje["kmEstimado"];
+        return $desvio > 0 ? $desvio : 0;
+    }
 
-
-    /*Cost*/
+    /*Costo*/
     public function calculateDistance($lat1, $long1, $lat2, $long2){
         $radioTierra = 6371.00;// en kilómetros
         $dLat = deg2rad ($lat2 - $lat1);
@@ -239,7 +256,6 @@ class ViajeModel
         $result = $this->calculateDistance($data[0]["latitud"], $data[0]["longitud"], $lat, $long);
         return $result;
     }
-
     public function calculateCostoKmRecorridos($km){
         return $km * 5;
     }
@@ -255,9 +271,8 @@ class ViajeModel
         return $km * $vehiculo["consumo"] / 100;
     }
 
-    public function calculateCostoDesvio($kmTotales,$kmEstimado){
-        $valor = $kmTotales-$kmEstimado;
-        return $valor > 0 ? $valor * 10 : 0;
+    public function calculateCostoDesvio($desvio){
+        return $desvio * 10;
     }
     public function calculateRelativeCost($data){
         $costo=array();
@@ -286,7 +301,7 @@ class ViajeModel
         $data["precioPesajes"]=$this->getSumaFrom($viaje, "pesajes")[0]["sumapesajes"];
         $data["precioExtras"]=$this->getSumaFrom($viaje, "extras")[0]["sumaextras"]+
                         $this->calculateExtrasPorConsumoExtra($datosViaje["codViaje"],$data["precioConsumo"]);
-        $data["precioDesvio"]=$this->calculateCostoDesvio($datosViaje["kmTotales"],$datosViaje["kmEstimado"]);
+        $data["precioDesvio"]=$this->calculateCostoDesvio($datosViaje["desvio"]);
         return $data;
     }
 
@@ -409,13 +424,46 @@ class ViajeModel
         $diff = $inicio->diff($fin);
         return $diff->days;
     }
-    public function isModifiableList($data){
-        for ($i=0; $i<sizeof($data);$i++){
-            $data[$i]["isModifiable"]=$this->isModifiable($data[$i]);
-        }
-        return $data;
+    public function getKmRecorridosYConsumoEnViaje(){
+        $sql="SELECT Viaje.tractor as Patente, SUM(Viaje.kmTotales) as TotalViajado
+        FROM Viaje
+        GROUP BY Viaje.tractor
+        WHERE Viaje.kmTotales IS NOT NULL
+        ORDER BY Viaje.kmTotales DESC";
+
+        return $this->database->query($sql);
     }
-    public function isModifiable($viaje){
-        return (strcmp($viaje["estado"],'cancelado')!=0) && (strcmp($viaje["estado"],'finalizado')!=0);
+
+    public function getLongestTravel(){
+        $sql="SELECT codViaje, origen, destino,fllegada, MAX(kmTotales) as Recorrido
+        FROM Viaje WHERE kmTotales IS NOT NULL";
+        return $this->database->query($sql);
+    }
+    public function getShortestTravel(){
+        $sql="SELECT codViaje, origen, destino, fllegada, MIN(kmTotales) as Recorrido
+        FROM Viaje WHERE kmTotales IS NOT NULL";
+        return $this->database->query($sql);
+    }
+    public function getConsumoPromedioEnViajes(){
+        $sql="SELECT Viaje.tractor as Vehiculo, AVG(Viaje.consumoTotal*100/Viaje.kmTotales) as Promedio
+        FROM Viaje
+        GROUP BY Viaje.tractor
+        WHERE Viaje.kmTotales IS NOT NULL
+        ORDER BY Promedio DESC";
+        return $this->database->query($sql);
+    }
+    public function getPromedioDesvios(){
+        $sql="SELECT AVG(Viaje.desvio) 
+        FROM Viaje 
+        WHERE Viaje.desvio IS NOT NULL";
+        return $this->database->query($sql);
+    }
+    public function getTotalRecorrido(){
+        $sql="SELECT SUM(kmRecorridos) as Total FROM Ubicacion";
+        return $this->database->query($sql);
+    }
+    public function getTotalConsumo(){
+        $sql="SELECT SUM(consumo) as Total FROM Ubicacion";
+        return $this->database->query($sql);
     }
 }

@@ -60,7 +60,8 @@ class Configuration{
         $usuarioModel = $this->getUsuarioModel();
         $administradorModel = $this->getAdministradorModel();
         $vehiculoModel = $this->getVehiculoModel();
-        return new AdministradorController($administradorModel, $usuarioModel, $vehiculoModel, $this->getRender());
+        $viajeModel = $this->getViajeModel();
+        return new AdministradorController($administradorModel, $usuarioModel, $vehiculoModel,$viajeModel, $this->getRender());
     }
     public function getAdministradorModel(){
         $database = $this->getDatabase();

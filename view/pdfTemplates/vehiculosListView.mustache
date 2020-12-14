@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="/public/img/logo.png" />
+    <title>Lista de vehículos</title>
+</head>
+<body style="font-size: 10pt;font-family: Serif">
+<p>Fecha de emisión del reporte: {{fecha}}</p>
+<div>
+    <table class="w3-table w3-hoverable w3-striped">
+        <tr class="w3-blue">
+            <th>Patente</th>
+            <th>Chasis</th>
+            <th>Marca</th>
+            <th>Modelo</th>
+            <th>Tipo</th>
+            <th>Estado</th>
+            <th>Fecha service</th>
+        </tr>
+        {{#vehiculos}}
+            <tr>
+                <td>{{patente}}</td>
+                <td>{{nroChasis}}</td>
+                <td>{{marca}}</td>
+                <td>{{modelo}}</td>
+                <td>{{tipo}}</td>
+                <td>
+                    {{#estado}}
+                        Disponible
+                    {{/estado}}
+                    {{^estado}}
+                        No disponible
+                    {{/estado}}
+                </td>
+                <td>{{fechaService}}</td>
+            </tr>
+        {{/vehiculos}}
+    </table>
+</div>
+</body>
+</html>

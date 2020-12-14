@@ -125,4 +125,37 @@ class UsuarioModel
         WHERE dni=".$data["dni"];
         $this->database->execute($sql);
     }
+    public function getCantidadEmpleadosPorRol(){
+        $empleados=$this->getUsuarios();
+        $admin=0;
+        $supervisor=0;
+        $mecanico=0;
+        $chofer=0;
+        for($i=0;$i<sizeof($empleados);$i++){
+            switch($empleados[$i]["rol"]){
+                case "administrador": $admin++;
+                    break;
+                case "supervisor": $supervisor++;
+                    break;
+                case "mecanico": $mecanico++;
+                    break;
+                case "chofer": $chofer++;
+                    break;
+            }
+        }
+        return array("administradores"=>$admin,
+            "supervisores"=>$supervisor,
+            "mecanicos"=>$mecanico,
+            "choferes"=>$chofer);
+    }
+    public function getUsuariosSinRol(){
+        $sql="SELECT * FROM Empleado WHERE estado=0
+        AND fechaBaja IS NULL";
+        return $this->database->query($sql);
+    }
+    public function getUsuariosEliminados(){
+        $sql="SELECT count(*) FROM Empleado 
+        WHERE fechaBaja IS NOT NULL";
+        return $this->database->query($sql);
+    }
 }

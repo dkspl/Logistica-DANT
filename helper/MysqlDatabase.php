@@ -24,9 +24,12 @@ class MysqlDatabase{
 
     public function execute($sql){
         mysqli_query($this->connection, $sql);
+
     }
     public function executeId($sql){
         mysqli_query($this->connection, $sql);
         return mysqli_insert_id($this->connection);
     }
+    /*if(!empty(mysqli_error($this->connection)))
+            die(var_dump(mysqli_error($this->connection)));*/
 }

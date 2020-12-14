@@ -6,13 +6,15 @@ class AdministradorController
     private $administradorModel;
     private $usuarioModel;
     private $vehiculoModel;
+    private $viajeModel;
     private $render;
 
-    public function __construct($administradorModel, $usuarioModel, $vehiculoModel, $render)
+    public function __construct($administradorModel, $usuarioModel, $vehiculoModel, $viajeModel, $render)
     {
         $this->administradorModel = $administradorModel;
         $this->usuarioModel = $usuarioModel;
         $this->vehiculoModel = $vehiculoModel;
+        $this->viajeModel = $viajeModel;
         $this->render = $render;
     }
 
@@ -50,7 +52,6 @@ class AdministradorController
         echo $this->render->render("view/vehiculosView.php",$data);
     }
     public function addFormVehicle(){
-        //$data["session"]=$this->usuarioModel->isSessionStarted();
         echo $this->render->render("view/addFormVehicleView.php");
     }
     public function setVehicle(){
@@ -133,4 +134,39 @@ class AdministradorController
         header("Location: /Administrador/editarEmpleado/id=".$data["dni"]);
         exit();
     }
+    public function listaVehiculos(){
+        $data["fecha"]=date('d-m-Y h:i:s A');
+        $data["vehiculos"]=$this->vehiculoModel->getVehiculos();
+        echo $this->render->renderLandscapePdf("view/pdfTemplates/vehiculosListView.mustache",$data);
+    }
+    public function listaEmpleados(){
+        $data["fecha"]=date('d-m-Y h:i:s A');
+        $data["admin"]=$this->administradorModel->getEmpleadosByRol("administrador");
+        $data["supervisor"]=$this->administradorModel->getEmpleadosByRol("supervisor");
+        $data["mecanico"]=$this->administradorModel->getMecanicos();
+        $data["chofer"]=$this->administradorModel->getChoferes();
+        echo $this->render->renderLandscapePdf("view/pdfTemplates/empleadosListView.mustache",$data);
+    }
+    public function reportes(){
+        echo $this->render->render("view/reportesView.php");
+    }
+    public function resumen(){
+        $data["fecha"]=date('d-m-Y h:i:s A');
+        $data["longest"]=$this->viajeModel->getLongestTravel();
+        $data["shortest"]=$this->viajeModel->getShortestTravel();
+        $data["gastoService"]=$this->vehiculoModel->getTotalGastoService();
+        $data["totalRecorrido"]=$this->viajeModel->getTotalRecorrido();
+        $data["totalConsumo"]=$this->viajeModel->getTotalConsumo();
+        $data["disponibilidadChoferes"]=$this->administradorModel->getCantidadChoferesPorDisponibilidad();
+        echo $this->render->renderPdf("view/pdfTemplates/reportesGeneralesView.mustache",$data);
+    }
+    public function employeeStats(){
+        $data["fecha"]=date('d-m-Y h:i:s A');
+        echo $this->render->renderPdf("view/pdfTemplates/reportesEmpleadosView.mustache",$data);
+    }
+    public function vehicleStats(){
+        $data["fecha"]=date('d-m-Y h:i:s A');
+        echo $this->render->renderPdf("view/pdfTemplates/reportesVehiculosView.mustache",$data);
+    }
+
 }

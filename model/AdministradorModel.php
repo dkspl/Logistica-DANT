@@ -40,4 +40,31 @@ class AdministradorModel
     public function needRole($data){
         return $data["estado"]==0 ? true : false;
     }
+    public function getEmpleadosByRol($rol){
+        $sql="SELECT * FROM Empleado WHERE rol='".$rol."' AND fechaBaja IS NULL AND estado=1";
+        return $this->database->query($sql);
+    }
+    public function getMecanicos(){
+        $sql="SELECT * FROM Empleado 
+            JOIN Mecanico
+            ON Empleado.dni=Mecanico.dniMec
+            WHERE Empleado.fechaBaja IS NULL AND Empleado.estado=1";
+        return $this->database->query($sql);
+    }
+    public function getChoferes(){
+        $sql="SELECT * FROM Empleado 
+            JOIN Chofer
+            ON Empleado.dni=Chofer.dniChof
+            WHERE Empleado.fechaBaja IS NULL AND Empleado.estado=1";
+        return $this->database->query($sql);
+    }
+    public function getCantidadChoferesPorDisponibilidad(){
+        $disponibles=0;
+        $noDisponibles=0;
+        $data=$this->getChoferes();
+        for($i=0;$i<sizeof($data);$i++){
+            $data[$i]["disponibilidad"]==1 ? $disponibles++ : $noDisponibles++;
+        }
+        return array("disponibles"=>$disponibles, "noDisponibles"=>$noDisponibles);
+    }
 }

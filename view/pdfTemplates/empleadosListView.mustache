@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="/public/img/logo.png" />
+    <title>Lista de empleados</title>
+</head>
+<body style="font-size: 10pt;font-family: Serif">
+<p>Fecha de emisión del reporte: {{fecha}}</p>
+<div>
+    <h2>Lista de empleados</h2>
+    <h3>Administradores</h3>
+    <table class="w3-table w3-hoverable w3-striped">
+        <tr class="w3-blue">
+            <th>DNI</th>
+            <th>Apellidos</th>
+            <th>Nombres</th>
+            <th>Fecha nac.</th>
+            <th>E-mail</th>
+        </tr>
+        {{#admin}}
+            <tr>
+                <td>{{dni}}</td>
+                <td>{{apellido}}</td>
+                <td>{{nombre}}</td>
+                <td>{{fnac}}</td>
+                <td>{{email}}</td>
+            </tr>
+        {{/admin}}
+    </table>
+    <h3>Supervisores</h3>
+    <table class="w3-table w3-hoverable w3-striped">
+        <tr class="w3-red">
+            <th>DNI</th>
+            <th>Apellidos</th>
+            <th>Nombres</th>
+            <th>Fecha nac.</th>
+            <th>E-mail</th>
+        </tr>
+        {{#supervisor}}
+            <tr>
+                <td>{{dni}}</td>
+                <td>{{apellido}}</td>
+                <td>{{nombre}}</td>
+                <td>{{fnac}}</td>
+                <td>{{email}}</td>
+            </tr>
+        {{/supervisor}}
+    </table>
+    <h3>Mecánicos</h3>
+    <table class="w3-table w3-hoverable w3-striped">
+        <tr class="w3-green">
+            <th>DNI</th>
+            <th>Apellidos</th>
+            <th>Nombres</th>
+            <th>Fecha nac.</th>
+            <th>E-mail</th>
+            <th>Núm. de matrícula</th>
+        </tr>
+        {{#mecanico}}
+            <tr>
+                <td>{{dni}}</td>
+                <td>{{apellido}}</td>
+                <td>{{nombre}}</td>
+                <td>{{fnac}}</td>
+                <td>{{email}}</td>
+                <td>{{matricula}}</td>
+            </tr>
+        {{/mecanico}}
+    </table>
+    <h3>Choferes</h3>
+    <table class="w3-table w3-hoverable w3-striped">
+        <tr class="w3-orange">
+            <th>DNI</th>
+            <th>Apellidos</th>
+            <th>Nombres</th>
+            <th>Fecha nac.</th>
+            <th>E-mail</th>
+            <th>Tipo de licencia</th>
+        </tr>
+        {{#chofer}}
+            <tr>
+                <td>{{dni}}</td>
+                <td>{{apellido}}</td>
+                <td>{{nombre}}</td>
+                <td>{{fnac}}</td>
+                <td>{{email}}</td>
+                <td>{{tipoLicencia}}</td>
+            </tr>
+        {{/chofer}}
+    </table>
+</div>
+</body>
+</html>
