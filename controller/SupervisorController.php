@@ -5,8 +5,8 @@ class SupervisorController
 {
     private $usuarioModel;
     private $viajeModel;
-    private $render;
     private $vehiculoModel;
+    private $render;
 
     public function __construct($usuarioModel, $viajeModel, $vehiculoModel, $render)
     {
@@ -22,7 +22,7 @@ class SupervisorController
         $data["arrastrados"]=$this->vehiculoModel->getArrastradosDisponibles();
         $data["choferes"]=$this->usuarioModel->getChoferesDisponibles();
         $data["tractores"]=$this->vehiculoModel->getTractoresDisponibles();
-        echo $this->render->render("view/travelFormView.php",$data);
+        echo $this->render->render("view/startTravelView.php",$data);
     }
     public function travels(){
         $data["viajes"]=$this->viajeModel->isModifiableList($this->viajeModel->getTravels());
@@ -81,8 +81,8 @@ class SupervisorController
         $data["arrastrado"]=$_POST["arrastrado"];
         $this->viajeModel->cancelTravel($data);
         $this->usuarioModel->changeStatus($data["chofer"]);
-        $this->vehiculoModel->setDisponibilidad($data["tractor"]);
-        $this->vehiculoModel->setDisponibilidad($data["arrastrado"]);
+        //$this->vehiculoModel->setDisponibilidad($data["tractor"]);
+        //$this->vehiculoModel->setDisponibilidad($data["arrastrado"]);
         header("Location: /Supervisor/travels");
         exit();
     }

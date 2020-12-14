@@ -7,6 +7,7 @@ include_once ("model/UsuarioModel.php");
 include_once ("model/AdministradorModel.php");
 include_once ("model/ViajeModel.php");
 include_once ("model/VehiculoModel.php");
+include_once ("model/ReportesModel.php");
 
 include_once ("controller/UsuarioController.php");
 include_once ("controller/AdministradorController.php");
@@ -17,6 +18,7 @@ include_once ("controller/ChoferController.php");
 include_once('third-party/mustache/src/Mustache/Autoloader.php');
 include_once("Router.php");
 include_once('third-party/phpqrcode/qrlib.php');
+include_once('third-party/libchart/libchart/classes/libchart.php');
 include_once('vendor/autoload.php');
 
 class Configuration{
@@ -61,7 +63,8 @@ class Configuration{
         $administradorModel = $this->getAdministradorModel();
         $vehiculoModel = $this->getVehiculoModel();
         $viajeModel = $this->getViajeModel();
-        return new AdministradorController($administradorModel, $usuarioModel, $vehiculoModel,$viajeModel, $this->getRender());
+        $reportesModel = $this->getReportesModel();
+        return new AdministradorController($administradorModel, $usuarioModel, $vehiculoModel,$viajeModel,$reportesModel, $this->getRender());
     }
     public function getAdministradorModel(){
         $database = $this->getDatabase();
@@ -81,6 +84,10 @@ class Configuration{
         $database = $this->getDatabase();
         return new VehiculoModel($database);
     }
+    public function getReportesModel(){
+        $database = $this->getDatabase();
+        return new ReportesModel($database);
+    }
     public function getMecanicoController(){
         $viajeModel = $this->getViajeModel();
         $vehiculoModel = $this->getVehiculoModel();
@@ -89,8 +96,7 @@ class Configuration{
     }
     public function getChoferController(){
         $usuarioModel= $this->getUsuarioModel();
-        $vehiculoModel= $this->getVehiculoModel();
         $viajeModel= $this->getViajeModel();
-        return new ChoferController($usuarioModel, $vehiculoModel, $viajeModel, $this->getRender());
+        return new ChoferController($usuarioModel, $viajeModel, $this->getRender());
     }
 }

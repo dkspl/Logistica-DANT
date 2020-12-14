@@ -24,6 +24,8 @@ class MysqlDatabase{
 
     public function execute($sql){
         mysqli_query($this->connection, $sql);
+        if(!empty(mysqli_error($this->connection)))
+            die(var_dump(mysqli_error($this->connection)));
 
     }
     public function executeId($sql){

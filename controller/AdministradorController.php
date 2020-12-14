@@ -7,14 +7,16 @@ class AdministradorController
     private $usuarioModel;
     private $vehiculoModel;
     private $viajeModel;
+    private $reportesModel;
     private $render;
 
-    public function __construct($administradorModel, $usuarioModel, $vehiculoModel, $viajeModel, $render)
+    public function __construct($administradorModel, $usuarioModel, $vehiculoModel, $viajeModel,$reportesModel, $render)
     {
         $this->administradorModel = $administradorModel;
         $this->usuarioModel = $usuarioModel;
         $this->vehiculoModel = $vehiculoModel;
         $this->viajeModel = $viajeModel;
+        $this->reportesModel = $reportesModel;
         $this->render = $render;
     }
 
@@ -75,8 +77,8 @@ class AdministradorController
         exit();
     }
     public function eliminarVehiculo(){
-        $patente=$_POST["patente"];
-        $this->vehiculoModel->deleteVehicle($patente);
+        $codigo=$_POST["codVehiculo"];
+        $this->vehiculoModel->deleteVehicle($codigo);
         header("Location: /Administrador/vehiculos");
         exit();
     }
@@ -94,18 +96,18 @@ class AdministradorController
         echo $this->render->render("view/editVehicleView.php",$data);
     }
     public function editVehicle(){
-        $data["patente"]=$_POST["patente"];
+        $data["codVehiculo"]=$_POST["codVehiculo"];
         $data["nroChasis"]=$_POST["nroChasis"];
         $data["marca"]=$_POST["marca"];
         $data["modelo"]=$_POST["modelo"];
         $data["kmTotales"]=$_POST["kmTotales"];
         $data["anoFabricacion"]=$_POST["anoFabricacion"];
         $this->vehiculoModel->editVehicle($data);
-        header("Location: /Administrador/modificarVehiculo/id=".$data["patente"]);
+        header("Location: /Administrador/modificarVehiculo/id=".$data["codVehiculo"]);
         exit();
     }
     public function editSpecificVehicle(){
-        $data["patente"]=$_POST["patente"];
+        $data["codVehiculo"]=$_POST["codVehiculo"];
         $data["tipo"]=$_POST["tipo"];
         if(strcmp($data["tipo"],'arrastrado')==0){
             $data["tipoCarga"]=$_POST["tipoCarga"];
@@ -116,7 +118,7 @@ class AdministradorController
             $data["consumo"]=$_POST["consumo"];
             $this->vehiculoModel->editTractor($data);
         }
-        header("Location: /Administrador/modificarVehiculo/id=".$data["patente"]);
+        header("Location: /Administrador/modificarVehiculo/id=".$data["codVehiculo"]);
         exit();
     }
     public function editarEmpleado(){
@@ -157,11 +159,16 @@ class AdministradorController
         $data["gastoService"]=$this->vehiculoModel->getTotalGastoService();
         $data["totalRecorrido"]=$this->viajeModel->getTotalRecorrido();
         $data["totalConsumo"]=$this->viajeModel->getTotalConsumo();
+        $data["promDesvio"]=$this->viajeModel->getPromedioDesvios();
         $data["disponibilidadChoferes"]=$this->administradorModel->getCantidadChoferesPorDisponibilidad();
         echo $this->render->renderPdf("view/pdfTemplates/reportesGeneralesView.mustache",$data);
     }
     public function employeeStats(){
         $data["fecha"]=date('d-m-Y h:i:s A');
+        $data["disponibilidad"]=$this->administradorModel->getCantidadChoferesPorDisponibilidad();
+        $data["graficoDisponibilidad"]=$this->reportesModel->graphAvailabilityReports($data);
+        $data["cantidadRol"]=$this->usuarioModel->getCantidadEmpleadosPorRol();
+        $data["graficoRol"]=$this->reportesModel->graphRoleReports($data);
         echo $this->render->renderPdf("view/pdfTemplates/reportesEmpleadosView.mustache",$data);
     }
     public function vehicleStats(){

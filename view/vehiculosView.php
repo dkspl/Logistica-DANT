@@ -6,7 +6,7 @@
         <form class="w3-container" action="/Administrador/eliminarVehiculo" method="post">
             <div>
                 <p><strong>¿Está seguro de que desea eliminar el vehículo? Esta acción es irreversible.</strong></p>
-                <input type="hidden" id="patdel" name="patente">
+                <input type="hidden" id="patdel" name="codVehiculo">
                 <div class="w3-center">
                     <button onclick="document.getElementById('confirm').style.display='none'"
                             type="button" class="w3-button w3-section w3-padding w3-blue">Cancelar</button>
@@ -49,11 +49,11 @@
             <td>{{fechaService}}</td>
             <td>
                 {{#permissions}}
-                <a class="w3-button w3-blue" href="/Usuario/vehicle/id={{patente}}">Detalle</a>
+                <a class="w3-button w3-blue" href="/Usuario/vehicle/id={{codVehiculo}}">Detalle</a>
                 {{/permissions}}
                 {{#admin}}
-                <a class="w3-button w3-green" href="/Administrador/modificarVehiculo/id={{patente}}">Modificar</a>
-                <button onclick="document.getElementById('confirm').style.display='block';addIDtoVehicle('{{patente}}', 'patdel')"
+                <a class="w3-button w3-green" href="/Administrador/modificarVehiculo/id={{codVehiculo}}">Modificar</a>
+                <button onclick="document.getElementById('confirm').style.display='block';addIDtoVehicle('{{codVehiculo}}', 'patdel')"
                         class='w3-button w3-red'>Eliminar</button>
                 {{/admin}}
             </td>
@@ -68,8 +68,8 @@
     </div>
 </div>
 <script>
-    function addIDtoVehicle(patente, id) {
-        document.getElementById(id).value=patente;
+    function addIDtoVehicle(vehiculo, id) {
+        document.getElementById(id).value=vehiculo;
     };
 </script>
 {{> footer }}

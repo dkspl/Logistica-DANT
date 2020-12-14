@@ -42,6 +42,7 @@ PRIMARY KEY(cuit)
 );
 
 CREATE TABLE IF NOT EXISTS Vehiculo(
+codVehiculo int not null AUTO_INCREMENT,
 patente varchar(7) not null,
 nroChasis int not null,
 marca varchar(20),
@@ -51,22 +52,22 @@ anoFabricacion year,
 fechaService date,
 tipo varchar(15),
 estado boolean,
-PRIMARY KEY(patente)
+PRIMARY KEY(codVehiculo)
 );
 
 CREATE TABLE IF NOT EXISTS Tractor(
-patTractor varchar(7) not null,
+codTractor int not null,
 nroMotor int,
 consumo double,
-PRIMARY KEY(patTractor),
-FOREIGN KEY(patTractor) REFERENCES Vehiculo(patente)
+PRIMARY KEY(codTractor),
+FOREIGN KEY(codTractor) REFERENCES Vehiculo(codVehiculo)
 );
 
 CREATE TABLE IF NOT EXISTS Arrastrado(
-patArrastrado varchar(7) not null,
+codArrastrado int not null,
 tipoCarga varchar(10),
-PRIMARY KEY(patArrastrado),
-FOREIGN KEY(patArrastrado) REFERENCES Vehiculo(patente)
+PRIMARY KEY(codArrastrado),
+FOREIGN KEY(codArrastrado) REFERENCES Vehiculo(codVehiculo)
 );
 
 CREATE TABLE IF NOT EXISTS Viaje(
@@ -86,15 +87,16 @@ kmEstimado double,
 kmTotales double,
 consumoEstimado double,
 consumoTotal double,
+desvio double,
 chofer int,
-tractor varchar(7),
+tractor int,
 cliente bigint,
-arrastrado varchar(7),
+arrastrado int,
 PRIMARY KEY(codViaje),
 FOREIGN KEY(chofer) REFERENCES Empleado(dni) ON DELETE SET NULL,
-FOREIGN KEY(tractor) REFERENCES Vehiculo(patente) ON DELETE SET NULL,
+FOREIGN KEY(tractor) REFERENCES Vehiculo(codVehiculo) ON DELETE SET NULL,
 FOREIGN KEY(cliente) REFERENCES Cliente(cuit) ON DELETE SET NULL,
-FOREIGN KEY(arrastrado) REFERENCES Vehiculo(patente) ON DELETE SET NULL
+FOREIGN KEY(arrastrado) REFERENCES Vehiculo(codVehiculo) ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS ImoClass(
@@ -178,11 +180,11 @@ fechaInicio date,
 fechaFin date,
 costo double,
 mecanico int,
-vehiculo varchar(7),
+vehiculo int,
 observaciones longtext,
 PRIMARY KEY(codigo),
 FOREIGN KEY(mecanico) REFERENCES Empleado(dni) ON DELETE SET NULL,
-FOREIGN KEY(vehiculo) REFERENCES Vehiculo(patente) ON DELETE SET NULL
+FOREIGN KEY(vehiculo) REFERENCES Vehiculo(codVehiculo) ON DELETE SET NULL
 );
 
 INSERT INTO Empleado (dni, nombre, apellido, email, password, fnac, rol, estado) VALUES
@@ -222,24 +224,24 @@ INSERT INTO Vehiculo (patente, nroChasis, marca, modelo,kmTotales, anoFabricacio
 ('AD200XS', 57193968, 'IVECO', 'Cursor', 60, 2009, '2020-08-01', 'tractor', 1),
 ('AD678QD', 23849041, 'M.BENZ', 'Actros 1846', 1500, 2016, '2021-01-31', 'tractor', 1);
 
-INSERT INTO Tractor (`patTractor`, nroMotor, consumo)
-VALUES('AA124DC',69904367, 30.0),
-('AA150QW',82039512, 30.0),
-('AB390QD',32041290, 30.0),
-('AB582QW',17800122, 30.0),
-('AB966QD',32632699, 30.0),
-('AC246QD',62500687, 30.0),
-('AC452WE',28204636, 30.0),
-('AD200XS',57193968, 30.0),
-('AD678QD',23849041, 30.0);
+INSERT INTO Tractor (`codTractor`, nroMotor, consumo)
+VALUES(2,69904367, 30.0),
+(3,82039512, 30.0),
+(6,32041290, 30.0),
+(7,17800122, 30.0),
+(8,32632699, 30.0),
+(11,62500687, 30.0),
+(13,28204636, 30.0),
+(14,57193968, 30.0),
+(15,23849041, 30.0);
 
-INSERT INTO Arrastrado (patArrastrado, tipoCarga)
-VALUES('AA100AS','Araña'),
-('AB230AS','Araña'),
-('AB318AD','Jaula'),
-('AC125AD','Araña'),
-('AC383AD','Jaula'),
-('AC208AG','Araña');
+INSERT INTO Arrastrado (codArrastrado, tipoCarga)
+VALUES(1,'Araña'),
+(4,'Araña'),
+(5,'Jaula'),
+(9,'Araña'),
+(12,'Jaula'),
+(10,'Araña');
 
 INSERT INTO ImoClass VALUES (1, 'Explosivos'),
 (2, 'Gases'),
@@ -281,7 +283,7 @@ BEGIN
     WHERE Chofer.dniChof = NEW.chofer;
     UPDATE Vehiculo
     SET Vehiculo.estado = 0
-    WHERE Vehiculo.patente IN (NEW.tractor, NEW.arrastrado);
+    WHERE Vehiculo.codVehiculo IN (NEW.tractor, NEW.arrastrado);
 END //
 DELIMITER ;
 
@@ -291,7 +293,7 @@ AFTER INSERT ON Service FOR EACH ROW
 BEGIN
     UPDATE Vehiculo
     SET Vehiculo.estado = 0
-    WHERE Vehiculo.patente = NEW.vehiculo;
+    WHERE Vehiculo.codVehiculo = NEW.vehiculo;
 END //
 DELIMITER ;
 
@@ -301,7 +303,7 @@ AFTER UPDATE ON Service FOR EACH ROW
 BEGIN
 IF((NEW.fechaFin IS NOT NULL) AND (OLD.fechaFin IS NULL)) THEN
     UPDATE Vehiculo SET Vehiculo.estado = 1
-    WHERE Vehiculo.patente = NEW.vehiculo;
+    WHERE Vehiculo.codVehiculo = NEW.vehiculo;
 END IF;
 END //
 DELIMITER ;
@@ -334,7 +336,7 @@ IF((NEW.fllegada IS NOT NULL AND OLD.fllegada IS NULL)
     WHERE Chofer.dniChof = NEW.chofer;
     UPDATE Vehiculo
     SET Vehiculo.estado = 1
-    WHERE Vehiculo.patente IN (NEW.tractor, NEW.arrastrado);
+    WHERE Vehiculo.codVehiculo IN (NEW.tractor, NEW.arrastrado);
 END IF;
 END //
 DELIMITER ;

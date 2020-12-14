@@ -17,7 +17,7 @@
             <span class="w3-input">{{fechaFin}} {{^fechaFin}} - {{/fechaFin}}</span>
         </div>
         <div class="w3-section">
-            <span>Patente del vehículo:</span>
+            <span>Código del vehículo:</span>
             <span class="w3-input">{{vehiculo}}</span>
         </div>
         <div class="w3-section">

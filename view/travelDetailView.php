@@ -16,10 +16,6 @@
             <span class="w3-input">{{chofer}}</span>
         </div>
         <div class="w3-section">
-            <span>Patente del vehículo:</span>
-            <span class="w3-input">{{tractor}}</span>
-        </div>
-        <div class="w3-section">
             <span>Origen:</span>
             <span class="w3-input">{{origen}}</span>
         </div>

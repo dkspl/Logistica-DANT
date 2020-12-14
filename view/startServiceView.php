@@ -10,11 +10,11 @@
             <select name="vehiculo">
                 <option value="" disabled selected>Elija el vehículo</option>
                 {{#vehiculos}}
-                <option value="{{patente}}">{{patente}} - {{marca}} {{modelo}}</option>
+                <option value="{{codVehiculo}}">{{patente}} - {{marca}} {{modelo}}</option>
                 {{#necesitaService}}
                 <script>
                     $(document).ready(function(){
-                        $("[value={{patente}}]").css("background-color", "#f5b0a1");
+                        $("[value={{codVehiculo}}]").css("background-color", "#f5b0a1");
                     });
                 </script>
                 {{/necesitaService}}

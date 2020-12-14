@@ -38,8 +38,10 @@
             </tr>
         {{/disponibilidadChoferes}}
         <tr>
+            {{#promDesvio}}
                 <td>Recorrido promedio de desvíos</td>
-                <td>km</td>
+                <td>{{promedio}} km</td>
+            {{/promDesvio}}
         </tr>
         <tr>
             {{#gastoService}}

@@ -23,8 +23,8 @@ class ViajeModel
         destino, latDestino, longDestino,kmEstimado, consumoEstimado, eta,etd,chofer,tractor,cliente,arrastrado) 
         VALUES ('".$data["origen"]."',".$data["latOrigen"].",".$data["longOrigen"].",'".$data["destino"]."',
         ".$data["latDestino"].",".$data["longDestino"].",".$data["kmEstimado"].",".$data["consumoEstimado"].",
-        '".$data["eta"]."','".$data["etd"]."',".$data["chofer"].",'".$data["tractor"]."',
-        ".$data["cuit"].",'".$data["arrastrado"]."')";
+        '".$data["eta"]."','".$data["etd"]."',".$data["chofer"].",".$data["tractor"].",
+        ".$data["cuit"].",".$data["arrastrado"].")";
         $idViaje=$this->database->executeId($sqlViaje);
         if($idViaje!=0){
             $this->createQrCode($idViaje);
@@ -176,7 +176,7 @@ class ViajeModel
         $kmFinal=$this->getSumaFrom($data["codViaje"], "kmRecorridos")[0]["sumakmRecorridos"];
         $consumoFinal=$this->getSumaFrom($data["codViaje"],"consumo")[0]["sumaconsumo"];
         $desvio=$this->calculateDesvio($data["codViaje"],$kmFinal);
-        $sql = "UPDATE Viaje SET 
+        $sql = "UPDATE Viaje SET
         fllegada = '".$llegada."',
         estado = 'finalizado',
         kmTotales =  ".$kmFinal.", 
@@ -209,7 +209,7 @@ class ViajeModel
     public function getTractorFrom($viaje){
         $sql="SELECT * FROM Viaje
         INNER JOIN Vehiculo as Tractor
-        ON Viaje.tractor=Tractor.patente
+        ON Viaje.tractor=Tractor.codVehiculo
         WHERE Viaje.codViaje=".$viaje;
         return $this->database->query($sql);
     }
@@ -217,7 +217,7 @@ class ViajeModel
     public function getArrastradoFrom($viaje){
         $sql="SELECT * FROM Viaje
         INNER JOIN Vehiculo as Arrastrado
-        ON Viaje.arrastrado=Arrastrado.patente
+        ON Viaje.arrastrado=Arrastrado.codVehiculo
         WHERE Viaje.codViaje=".$viaje;
         return $this->database->query($sql);
     }
@@ -311,12 +311,14 @@ class ViajeModel
     }
     public function getImporteCargas($idViaje){
         $sql = "SELECT SUM(importe) as sumaImporte FROM Combustible WHERE numViaje=".$idViaje;
-        return $this->database->query($sql);
+        $data=$this->database->query($sql);
+        if(is_null($data[0]["sumaImporte"])){
+            return 0;
+        }
+        return $data[0]["sumaImporte"];
     }
     public function calculateExtrasPorConsumoExtra($idViaje, $consumo){
         $importeTotal = $this->getImporteCargas($idViaje);
-        if(is_null($importeTotal[0]["sumaImporte"]))
-            $importeTotal = 0;
         $diferencia = $importeTotal - $consumo;
         return $diferencia > 0 ? $diferencia * 40 : 0;
     }
@@ -424,10 +426,12 @@ class ViajeModel
         $diff = $inicio->diff($fin);
         return $diff->days;
     }
-    public function getKmRecorridosYConsumoEnViaje(){
-        $sql="SELECT Viaje.tractor as Patente, SUM(Viaje.kmTotales) as TotalViajado
+    public function getKmRecorridosEnViaje(){
+        $sql="SELECT Vehiculo.patente as Vehiculo, SUM(Viaje.kmTotales) as TotalViajado
         FROM Viaje
-        GROUP BY Viaje.tractor
+        JOIN Vehiculo
+        ON Viaje.tractor=Vehiculo.codVehiculo
+        GROUP BY Vehiculo.codVehiculo
         WHERE Viaje.kmTotales IS NOT NULL
         ORDER BY Viaje.kmTotales DESC";
 
@@ -445,15 +449,17 @@ class ViajeModel
         return $this->database->query($sql);
     }
     public function getConsumoPromedioEnViajes(){
-        $sql="SELECT Viaje.tractor as Vehiculo, AVG(Viaje.consumoTotal*100/Viaje.kmTotales) as Promedio
+        $sql="SELECT Vehiculo.patente as Vehiculo, AVG(Viaje.consumoTotal*100/Viaje.kmTotales) as Promedio
         FROM Viaje
-        GROUP BY Viaje.tractor
+        JOIN Vehiculo
+        ON Viaje.tractor=Vehiculo.codVehiculo
+        GROUP BY Vehiculo.codVehiculo
         WHERE Viaje.kmTotales IS NOT NULL
         ORDER BY Promedio DESC";
         return $this->database->query($sql);
     }
     public function getPromedioDesvios(){
-        $sql="SELECT AVG(Viaje.desvio) 
+        $sql="SELECT AVG(Viaje.desvio) as promedio
         FROM Viaje 
         WHERE Viaje.desvio IS NOT NULL";
         return $this->database->query($sql);

@@ -28,25 +28,25 @@ class VehiculoModel
             tipo,kmTotales,anoFabricacion,fechaService, estado) VALUES
             ('".$data["patente"]."',".$data["nroChasis"].",'".$data["marca"]."','".$data["modelo"]."',
             '".$data["type"]."',".$data["kmTotales"].",".$data["anoFabricacion"].",'".$data["fechaService"]."', true)";
-        $this->database->execute($sql);
-        $this->setVehicleType($data);
+        $id=$this->database->executeId($sql);
+        $this->setVehicleType($data, $id);
     }
-    public function setVehicleType($data){
+    public function setVehicleType($data, $id){
         if($data["tipo"]==1){
-            $sql="INSERT INTO Arrastrado(patArrastrado, tipoCarga)
-              VALUES ('".$data["patente"]."','".$data["tipoCarga"]."')";
+            $sql="INSERT INTO Arrastrado(codArrastrado, tipoCarga)
+              VALUES (".$id.",'".$data["tipoCarga"]."')";
         }
         else{
-            $sql="INSERT INTO Tractor(patTractor, nroMotor, consumo)
-              VALUES ('".$data["patente"]."',".$data["nroMotor"].",".$data["consumo"].")";
+            $sql="INSERT INTO Tractor(codTractor, nroMotor, consumo)
+              VALUES (".$id.",".$data["nroMotor"].",".$data["consumo"].")";
         }
         $this->database->execute($sql);
     }
     public function setType($type){
         return $type == 1 ? "arrastrado" : "tractor";
     }
-    public function deleteVehicle($patente){
-        $sql="DELETE FROM Vehiculo WHERE patente='".$patente."'";
+    public function deleteVehicle($codigo){
+        $sql="DELETE FROM Vehiculo WHERE codVehiculo=".$codigo;
         $this->database->execute($sql);
     }
     public function needServiceList($data){
@@ -63,7 +63,7 @@ class VehiculoModel
     public function setService($data){
         $fecha=date("Y-m-d");
         $sql="INSERT INTO Service(fechaInicio, intext, mecanico, vehiculo)
-            VALUES ('".$fecha."',".$data["intext"].",".$data["mecanico"].",'".$data["vehiculo"]."')";
+            VALUES ('".$fecha."',".$data["intext"].",".$data["mecanico"].",".$data["vehiculo"].")";
         $this->database->execute($sql);
     }
     public function getServicesByMecanico($id){
@@ -87,65 +87,65 @@ class VehiculoModel
         $sql="SELECT * FROM Vehiculo WHERE estado=1";
         return $this->database->query($sql);
     }
-    public function setDisponibilidad($patente){
+    /*public function setDisponibilidad($patente){
         $vehiculo=$this->getVehicleById($patente);
         $estadoActual=$vehiculo["estado"];
         $nuevoEstado=$this->parseBooleanToBin(!($estadoActual));
         $sqlCambio="UPDATE Vehiculo SET estado=".$nuevoEstado." WHERE patente='".$patente."'";
         $this->database->execute($sqlCambio);
-    }
-    public function getVehicleById($patente){
-        $sql="SELECT * FROM Vehiculo WHERE patente='".$patente."'";
+    }*/
+    public function getVehicleById($id){
+        $sql="SELECT * FROM Vehiculo WHERE codVehiculo=".$id;
         return $this->database->query($sql)[0];
     }
-    public function setFechaService($patente, $fecha){
+    public function setFechaService($id, $fecha){
         $sql="UPDATE Vehiculo SET fechaService='".$fecha."'
-            WHERE patente='".$patente."'";
+            WHERE codVehiculo=".$id;
         $this->database->execute($sql);
     }
     public function parseBooleanToBin($status){
         return $status ? 1 : 0;
     }
-    public function getTractorById($patente){
+    public function getTractorById($id){
         $sql="SELECT * FROM Vehiculo 
         JOIN Tractor
-        ON Vehiculo.patente=Tractor.patTractor
-        WHERE patente='".$patente."'";
+        ON Vehiculo.codVehiculo=Tractor.codTractor
+        WHERE codVehiculo=".$id;
         return $this->database->query($sql)[0];
     }
     public function getArrastradoById($patente){
         $sql="SELECT * FROM Vehiculo 
         JOIN Arrastrado
-        ON Vehiculo.patente=Arrastrado.patArrastrado
-        WHERE patente='".$patente."'";
+        ON Vehiculo.codVehiculo=Arrastrado.codArrastrado
+        WHERE codVehiculo=".$patente;
         return $this->database->query($sql)[0];
     }
-    public function getLastLocalizationFrom($patente){
+    public function getLastLocalizationFrom($id){
         $sql="SELECT Ubicacion.latitud, Ubicacion.longitud, Ubicacion.fecha,Vehiculo.patente FROM Vehiculo
             JOIN Viaje 
-            ON Vehiculo.patente = Viaje.tractor 
+            ON Vehiculo.codVehiculo = Viaje.tractor 
             JOIN Ubicacion 
             ON Viaje.codViaje = Ubicacion.viaje 
-            WHERE Vehiculo.patente = '".$patente."'
+            WHERE Vehiculo.codVehiculo = ".$id."
             AND Ubicacion.fecha = (SELECT MAX(fecha) FROM Ubicacion as ubi 
                                     JOIN Viaje as travel
                                     ON ubi.viaje = travel.codViaje
                                     JOIN Vehiculo as vehicle
-                                    ON travel.tractor=vehicle.patente
-                                    WHERE vehicle.patente = Vehiculo.patente)";
+                                    ON travel.tractor=vehicle.codVehiculo
+                                    WHERE vehicle.codVehiculo = Vehiculo.codVehiculo)";
         return $this->database->query($sql);
     }
     public function editArrastrado($data){
         $sql="UPDATE Arrastrado SET
         tipoCarga='".$data["tipoCarga"]."' 
-        WHERE patArrastrado like '".$data["patente"]."'";
+        WHERE codArrastrado =".$data["codVehiculo"];
         $this->database->execute($sql);
     }
     public function editTractor($data){
         $sql="UPDATE Tractor SET
         nroMotor=".$data["nroMotor"].", 
         consumo=".$data["consumo"]." 
-        WHERE patTractor like '".$data["patente"]."'";
+        WHERE codTractor = ".$data["codVehiculo"];
         $this->database->execute($sql);
     }
     public function editVehicle($data){
@@ -155,7 +155,7 @@ class VehiculoModel
         modelo='".$data["modelo"]."',
         kmTotales=".$data["kmTotales"].",
         anoFabricacion=".$data["anoFabricacion"]."
-        WHERE patente like '".$data["patente"]."'";
+        WHERE codVehiculo =".$data["codVehiculo"];
         $this->database->execute($sql);
     }
     public function getTotalGastoService(){
@@ -165,10 +165,12 @@ class VehiculoModel
         return $this->database->query($sql);
     }
     public function getTotalGastoPorVehiculo(){
-        $sql="SELECT Service.vehiculo as Patente, SUM(Service.costo) as Total
+        $sql="SELECT Vehiculo.patente as Patente, SUM(Service.costo) as Total
         FROM Service
+        JOIN Vehiculo
+        ON Service.vehiculo=Vehiculo.codVehiculo
         WHERE costo IS NOT NULL
-        GROUP BY Service.vehiculo
+        GROUP BY Vehiculo.patente
         ORDER BY Patente";
         return $this->database->query($sql);
     }

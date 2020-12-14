@@ -115,17 +115,17 @@ class UsuarioController
     }
     public function vehicle(){
         if($this->usuarioModel->isSessionStarted()) {
-            $patente=$_GET["id"];
-            $data["vehiculo"]=$this->vehiculoModel->getVehicleById($patente);
+            $id=$_GET["id"];
+            $data["vehiculo"]=$this->vehiculoModel->getVehicleById($id);
             if(strcmp($data["vehiculo"]["tipo"],'tractor') == 0) {
-                $data["tipoVehiculo"]=$this->vehiculoModel->getTractorById($patente);
+                $data["tipoVehiculo"]=$this->vehiculoModel->getTractorById($id);
                 $data["tractorArrastrado"]=1;
             }
             else{
                 $data["tractorArrastrado"]=0;
-                $data["tipoVehiculo"]=$this->vehiculoModel->getArrastradoById($patente);
+                $data["tipoVehiculo"]=$this->vehiculoModel->getArrastradoById($id);
             }
-            $data["ubicacion"]=$this->vehiculoModel->getLastLocalizationFrom($patente);
+            $data["ubicacion"]=$this->vehiculoModel->getLastLocalizationFrom($id);
             echo $this->render->render("view/vehicleDetailView.php",$data);
         }
         else{

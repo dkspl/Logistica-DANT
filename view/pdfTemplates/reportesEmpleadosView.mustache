@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="/public/img/logo.png" />
+    <title>Reporte de empleados</title>
+</head>
+<body style="font-size: 12pt;font-family: Serif">
+
+<h2>Datos generales</h2>
+<p>Fecha de emisión del reporte: {{fecha}}</p>
+<div class="w3-container">
+    <h4>Disponibilidad</h4>
+    <img src="/tmp/charts/choferesDisponibles.png">
+    <br>
+    <h4>Cantidad de empleados por rol</h4>
+    <img src="/tmp/charts/totalRoles.png">
+    <br>
+    <h4>Cantidad de empleados por rol</h4>
+    <img src="/tmp/charts/totalRoles.png">
+    <table class="w3-table w3-hoverable w3-striped">
+        <tr>
+            {{#totalRecorrido}}
+                <td>Total de km. recorridos</td>
+                <td>{{Total}} km</td>
+            {{/totalRecorrido}}
+        </tr>
+        <tr>
+            {{#totalConsumo}}
+                <td>Total de lts. de combustible consumidos</td>
+                <td>{{Total}} lts</td>
+            {{/totalConsumo}}
+        </tr>
+        {{#disponibilidadChoferes}}
+            <tr>
+                <td>Cantidad de choferes disponibles</td>
+                <td>{{disponibles}}</td>
+            </tr>
+            <tr>
+                <td>Cantidad de choferes no disponibles</td>
+                <td>{{noDisponibles}}</td>
+            </tr>
+        {{/disponibilidadChoferes}}
+        <tr>
+            {{#promDesvio}}
+                <td>Recorrido promedio de desvíos</td>
+                <td>{{promedio}} km</td>
+            {{/promDesvio}}
+        </tr>
+        <tr>
+            {{#gastoService}}
+                <td>Gasto total por service</td>
+                <td>$ {{Total}}</td>
+            {{/gastoService}}
+        </tr>
+    </table>
+</div>
+<br>
+<div class="w3-container">
+    <h4>Viaje más largo</h4>
+    <table class="w3-table w3-hoverable w3-striped">
+        <tr class="w3-red">
+            <th>Cod</th>
+            <th>Origen</th>
+            <th>Destino</th>
+            <th>Fecha de llegada</th>
+            <th>Recorrido</th>
+        </tr>
+        {{#longest}}
+            <tr>
+                <td>{{codViaje}}</td>
+                <td style="max-width:200px">{{origen}}</td>
+                <td style="max-width:200px">{{destino}}</td>
+                <td>{{fllegada}}</td>
+                <td>{{Recorrido}} km</td>
+            </tr>
+        {{/longest}}
+    </table>
+    <br>
+    <h4>Viaje más corto</h4>
+    <table class="w3-table w3-hoverable w3-striped">
+        <tr class="w3-blue">
+            <th>Cod</th>
+            <th>Origen</th>
+            <th>Destino</th>
+            <th>Fecha de llegada</th>
+            <th>Recorrido</th>
+        </tr>
+        {{#shortest}}
+            <tr>
+                <td>{{codViaje}}</td>
+                <td style="max-width:200px">{{origen}}</td>
+                <td style="max-width:200px">{{destino}}</td>
+                <td>{{fllegada}}</td>
+                <td>{{Recorrido}} km</td>
+            </tr>
+        {{/shortest}}
+    </table>
+</div>
+
+</body>
+</html>

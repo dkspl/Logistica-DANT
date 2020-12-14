@@ -6,13 +6,11 @@ class ChoferController
     private $usuarioModel;
     private $viajeModel;
     private $render;
-    private $vehiculoModel;
 
-    public function __construct($usuarioModel, $vehiculoModel, $viajeModel, $render)
+    public function __construct($usuarioModel, $viajeModel, $render)
     {
         $this->usuarioModel = $usuarioModel;
         $this->viajeModel = $viajeModel;
-        $this->vehiculoModel = $vehiculoModel;
         $this->render = $render;
     }
     public function execute(){
@@ -88,10 +86,5 @@ class ChoferController
         $data["extras"]=$_POST["extras"];
         $final["factura"]=$this->viajeModel->endTravel($data);
         echo $this->render->render("view/choferView.php",$final);
-    }
-    public function factura(){
-        $id = $_GET["id"];
-        $data=$this->viajeModel->getDatosFactura($id);
-        $this->render->renderPdf("view/pdfTemplates/facturaView.mustache", $data);
     }
 }

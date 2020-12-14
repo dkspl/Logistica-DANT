@@ -67,4 +67,5 @@ class AdministradorModel
         }
         return array("disponibles"=>$disponibles, "noDisponibles"=>$noDisponibles);
     }
+
 }

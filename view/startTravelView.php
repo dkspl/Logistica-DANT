@@ -61,7 +61,7 @@
                     <select class="w3-select w3-border" name="tractor">
                         <option value="" disabled selected>Elija el tractor</option>
                         {{#tractores}}
-                        <option value="{{patente}}">{{patente}} - {{marca}} {{modelo}}</option>
+                        <option value="{{codVehiculo}}">{{patente}} - {{marca}} {{modelo}}</option>
                         {{/tractores}}
                     </select>
                 </label>
@@ -136,7 +136,7 @@
                     <select class="w3-select w3-border"name="arrastrado">
                         <option value="" disabled selected>Elija el arrastrado</option>
                         {{#arrastrados}}
-                        <option value="{{patente}}">{{patente}} - {{marca}} {{modelo}}</option>
+                        <option value="{{codVehiculo}}">{{patente}} - {{marca}} {{modelo}}</option>
                         {{/arrastrados}}
                     </select>
                 </label>

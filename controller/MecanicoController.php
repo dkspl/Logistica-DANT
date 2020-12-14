@@ -16,7 +16,6 @@ class MecanicoController
     }
     public function startService(){
         $data["vehiculos"]=$this->vehiculoModel->needServiceList($this->vehiculoModel->getVehiculosDisponibles());
-        //$data["session"]=$this->usuarioModel->isSessionStarted();
         echo $this->render->render("view/startServiceView.php",$data);
     }
     public function setService(){
@@ -29,13 +28,11 @@ class MecanicoController
     }
     public function myServices(){
         $data["services"]=$this->vehiculoModel->getServicesByMecanico($_SESSION["user"]);
-        //$data["session"]=$this->usuarioModel->isSessionStarted();
         echo $this->render->render("view/servicesView.php",$data);
     }
     public function endingService(){
         $service=$_GET["codigo"];
         $data["service"]=$this->vehiculoModel->getServiceById($service);
-        //$data["session"]=$this->usuarioModel->isSessionStarted();
         echo $this->render->render("view/endServiceView.php",$data);
     }
     public function endService(){
@@ -50,11 +47,9 @@ class MecanicoController
     public function service(){
         $codigo=$_GET["codigo"];
         $data["service"]=$this->vehiculoModel->getServiceById($codigo);
-        //$data["session"]=$this->usuarioModel->isSessionStarted();
         echo $this->render->render("view/serviceDetailView.php",$data);
     }
     public function vehiculos(){
-        //$data["session"]=$this->usuarioModel->isSessionStarted();
         $data["vehiculos"]=$this->vehiculoModel->needServiceList($this->vehiculoModel->getVehiculos());
         $data["permissions"]=$this->usuarioModel->validatePermissions($_SESSION["user"]);
         echo $this->render->render("view/vehiculosView.php",$data);

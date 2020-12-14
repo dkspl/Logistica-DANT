@@ -10,7 +10,7 @@
         </div>
         <div class="w3-container">
             <br>
-            <input type="hidden" name="patente" value="{{patente}}">
+            <input type="hidden" name="codVehiculo" value="{{codVehiculo}}">
             <label class="w3-section">
                 <span>Patente:</span>
                 <span class="w3-input">{{patente}}</span>
@@ -56,7 +56,7 @@
         </div>
         <div class="w3-container">
 
-            <input type="hidden" name="patente" value="{{patente}}">
+            <input type="hidden" name="codVehiculo" value="{{codVehiculo}}">
             <input type="hidden" name="tipo" value="{{tipo}}">
                    {{/vehiculo}}
             <br>
