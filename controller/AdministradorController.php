@@ -169,6 +169,10 @@ class AdministradorController
         $data["graficoDisponibilidad"]=$this->reportesModel->graphAvailabilityReports($data);
         $data["cantidadRol"]=$this->usuarioModel->getCantidadEmpleadosPorRol();
         $data["graficoRol"]=$this->reportesModel->graphRoleReports($data);
+        $data["sinAsignar"]=$this->usuarioModel->getUsuariosSinAsignar();
+        $data["eliminados"]=$this->usuarioModel->getUsuariosEliminados();
+        $data["kmPorChofer"]=$this->viajeModel->getKmRecorridosPorChofer();
+        $data["graficoRol"]=$this->reportesModel->graphKmDrivers($data);
         echo $this->render->renderPdf("view/pdfTemplates/reportesEmpleadosView.mustache",$data);
     }
     public function vehicleStats(){

@@ -148,13 +148,14 @@ class UsuarioModel
             "mecanicos"=>$mecanico,
             "choferes"=>$chofer);
     }
-    public function getUsuariosSinRol(){
+    public function getUsuariosSinAsignar(){
         $sql="SELECT * FROM Empleado WHERE estado=0
         AND fechaBaja IS NULL";
         return $this->database->query($sql);
     }
     public function getUsuariosEliminados(){
-        $sql="SELECT count(*) FROM Empleado 
+        $sql="SELECT count(*) as Total, fechaBaja
+        FROM Empleado 
         WHERE fechaBaja IS NOT NULL";
         return $this->database->query($sql);
     }

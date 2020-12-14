@@ -39,4 +39,17 @@ class ReportesModel
         $chart->setTitle("Cantidad de empleados por rol (".$data["fecha"].")");
         $chart->render($filename);
     }
+    public function graphKmDrivers($data){
+        $chart = new VerticalBarChart(600, 200);
+        $filename = "tmp/charts/kmPorChofer.png";
+        $dataSet = new XYDataSet();
+        foreach($data["kmPorChofer"] as $valor){
+            $dataSet->addPoint(new Point($valor["dni"],
+                $valor["TotalViajado"]));
+        }
+
+        $chart->setDataSet($dataSet);
+        $chart->setTitle("Km recorridos por chofer (".$data["fecha"].")");
+        $chart->render($filename);
+    }
 }

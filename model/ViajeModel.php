@@ -437,6 +437,16 @@ class ViajeModel
 
         return $this->database->query($sql);
     }
+    public function getKmRecorridosPorChofer(){
+        $sql="SELECT Empleado.dni, Empleado.nombre, Empleado.apellido, SUM(Viaje.kmTotales) as TotalViajado
+        FROM Viaje
+        JOIN Empleado
+        ON Viaje.chofer=Empleado.dni
+        WHERE Viaje.kmTotales IS NOT NULL
+        GROUP BY Empleado.dni
+        ORDER BY Empleado.apellido DESC";
+        return $this->database->query($sql);
+    }
 
     public function getLongestTravel(){
         $sql="SELECT codViaje, origen, destino,fllegada, MAX(kmTotales) as Recorrido
